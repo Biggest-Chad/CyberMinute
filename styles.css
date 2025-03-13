@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000; /* Sets the background to black */
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.game-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+}
+
+.status {
+    font-size: 20px; /* Increased from 18px */
+    margin-top: 10px;
+}
+
+.question {
+    font-size: 26px; /* Increased from 24px */
+    line-height: 1.4; /* Added for better readability */
+    margin: 20px 0;
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    padding: 13px 26px; /* Increased from 10px 20px */
+    font-size: 24px; /* Increased from 18px */
+    background-color: #fd7e14; /* Orange from Skywave Technologies logo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #e06f12; /* Darker orange for hover */
+}
+
+.start-screen, .end-screen {
+    text-align: center;
+}
+
+.start-screen p, .end-screen p {
+    font-size: 18px;
+}
+
+#start-button, #play-again {
+    background-color: #fd7e14;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#start-button:hover, #play-again:hover {
+    background-color: #e06f12;
+}
+
+.hidden {
+    display: none;
+}
+
+body.correct {
+    background-color: #d4edda; /* Light green for correct answers */
+}
+
+body.incorrect {
+    background-color: #f8d7da; /* Light red for incorrect answers */
+}
+
+.logo {
+    max-width: 200px;
+    width: 100%;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .buttons {
+        flex-direction: column;
+    }
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .question {
+        font-size: 22px; /* Increased from 20px */
+    }
+    .status {
+        font-size: 18px; /* Increased from 16px */
+    }
+}
