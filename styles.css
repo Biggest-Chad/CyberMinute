@@ -63,13 +63,16 @@ body {
 .question {
     font-size: 26px;
     line-height: 1.4;
-    margin: 20px 0;
     text-align: center;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 20px;
+    padding: 20px;
+    position: fixed;
+    bottom: 240px; /* Height of buttons container + score container + padding */
+    left: 0;
+    right: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2;
+    border-top: 2px solid #fd7e14;
 }
 
 .buttons {
@@ -196,12 +199,13 @@ body.incorrect {
     }
 
     .game-screen {
-        padding-bottom: 240px; /* Increased space for both containers on mobile */
+        padding-bottom: 240px;
     }
 
     .question {
-        font-size: 22px;
-        padding: 0 10px 20px 10px;
+        font-size: 20px;
+        padding: 15px;
+        bottom: 260px; /* Adjusted for mobile spacing */
     }
 
     .buttons {
@@ -213,15 +217,14 @@ body.incorrect {
         flex-direction: column;
         gap: 15px;
         width: 100%;
-    }
-
-    .next-button {
-        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
     }
 
     button {
         width: 100%;
-        padding: 20px;
+        padding: 16px;
+        font-size: 20px;
     }
 
     .timer {
