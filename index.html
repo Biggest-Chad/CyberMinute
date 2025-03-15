@@ -13,28 +13,49 @@
             <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
             <h1>Cyber Minute</h1>
             <p>Answer as many true or false questions as you can in one minute. Good luck!</p>
-            <button id="start-button">Start</button>
+            <div class="menu-buttons">
+                <button id="start-button">Start</button>
+                <button id="study-button">Study Mode</button>
+            </div>
         </div>
         <!-- Game Screen -->
         <div class="game-screen hidden">
             <div class="header">
-                <h1>Cyber Minute</h1>
-                <div class="status">
-                    <span id="timer">60</span> seconds left | Score: <span id="score">0</span>
+                <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo game-logo hidden">
+                <h1 id="game-title">Cyber Minute</h1>
+                <div class="timer-container">
+                    <span id="timer" class="timer">60</span>
+                    <span class="timer-label">seconds left</span>
                 </div>
             </div>
             <div class="question" id="question"></div>
             <div class="buttons">
-                <button id="true-button">True</button>
-                <button id="false-button">False</button>
+                <div class="answer-buttons">
+                    <button id="true-button">True</button>
+                    <button id="false-button">False</button>
+                </div>
+                <div class="feedback-container hidden">
+                    <div id="answer-feedback" class="answer-feedback"></div>
+                    <button id="next-question" class="next-button">Next Question</button>
+                </div>
+            </div>
+            <div class="score-container">
+                <div class="score-label">Score</div>
+                <div id="score" class="score">0</div>
+            </div>
+            <div class="menu-container hidden">
+                <button id="main-menu-button">Main Menu</button>
             </div>
         </div>
         <!-- End Screen -->
         <div class="end-screen hidden">
             <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
             <h1>Time's up!</h1>
-            <p>You answered <span id="final-score"></span> questions correctly.</p>
-            <button id="play-again">Play Again</button>
+            <h2>You answered <span id="final-score"></span> questions correctly.</h2>
+            <div class="menu-buttons">
+                <button id="play-again">Play Again</button>
+                <button id="end-study-button">Study Mode</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
