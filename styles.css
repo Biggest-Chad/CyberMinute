@@ -66,18 +66,22 @@ body {
     text-align: center;
     padding: 20px;
     position: fixed;
-    bottom: 240px; /* Height of buttons container + score container + padding */
+    bottom: 280px; /* Increased to provide more space above buttons */
     left: 0;
     right: 0;
     margin: 0;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 2;
     border-top: 2px solid #fd7e14;
+    min-height: 100px; /* Ensure consistent height for container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttons {
     position: fixed;
-    bottom: 120px; /* Height of score container + padding */
+    bottom: 120px;
     left: 0;
     right: 0;
     display: flex;
@@ -205,7 +209,8 @@ body.incorrect {
     .question {
         font-size: 20px;
         padding: 15px;
-        bottom: 260px; /* Adjusted for mobile spacing */
+        bottom: 320px; /* Increased spacing on mobile */
+        min-height: 80px; /* Slightly smaller minimum height on mobile */
     }
 
     .buttons {
