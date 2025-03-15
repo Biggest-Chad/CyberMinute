@@ -4,40 +4,132 @@ body {
     color: white;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .game-container {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.game-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    padding-bottom: 200px; /* Increased space for both containers */
 }
 
 .header {
     text-align: center;
+    margin-bottom: 20px;
 }
 
-.status {
-    font-size: 20px; /* Increased from 18px */
-    margin-top: 10px;
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.timer {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.timer-label {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.timer.warning {
+    color: #ff4444;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }
 
 .question {
-    font-size: 26px; /* Increased from 24px */
-    line-height: 1.4; /* Added for better readability */
+    font-size: 26px;
+    line-height: 1.4;
     margin: 20px 0;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
 }
 
 .buttons {
+    position: fixed;
+    bottom: 120px; /* Height of score container + padding */
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-top: 2px solid #fd7e14;
+    z-index: 2;
+}
+
+.answer-buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
+    width: 100%;
+}
+
+.score-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid #fd7e14;
+    z-index: 1;
+}
+
+.score-label {
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.score {
+    font-size: 48px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.score.correct {
+    color: #4CAF50;
+}
+
+.score.incorrect {
+    color: #ff4444;
 }
 
 button {
-    padding: 13px 26px; /* Increased from 10px 20px */
-    font-size: 24px; /* Increased from 18px */
-    background-color: #fd7e14; /* Orange from Skywave Technologies logo */
+    padding: 15px 30px;
+    font-size: 24px;
+    background-color: #fd7e14;
     color: white;
     border: none;
     border-radius: 5px;
@@ -46,7 +138,7 @@ button {
 }
 
 button:hover {
-    background-color: #e06f12; /* Darker orange for hover */
+    background-color: #e06f12;
 }
 
 .start-screen, .end-screen {
@@ -57,7 +149,14 @@ button:hover {
     font-size: 18px;
 }
 
-#start-button, #play-again {
+.menu-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#start-button, #study-button, #play-again {
     background-color: #fd7e14;
     color: white;
     padding: 10px 20px;
@@ -67,7 +166,7 @@ button:hover {
     cursor: pointer;
 }
 
-#start-button:hover, #play-again:hover {
+#start-button:hover, #study-button:hover, #play-again:hover {
     background-color: #e06f12;
 }
 
@@ -92,17 +191,101 @@ body.incorrect {
 
 /* Mobile responsiveness */
 @media (max-width: 600px) {
-    .buttons {
-        flex-direction: column;
+    .game-container {
+        padding: 15px;
     }
+
+    .game-screen {
+        padding-bottom: 240px; /* Increased space for both containers on mobile */
+    }
+
+    .question {
+        font-size: 22px;
+        padding: 0 10px 20px 10px;
+    }
+
+    .buttons {
+        bottom: 140px;
+        padding: 15px;
+    }
+
+    .answer-buttons {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .next-button {
+        width: 100%;
+    }
+
     button {
         width: 100%;
-        margin-bottom: 10px;
+        padding: 20px;
     }
-    .question {
-        font-size: 22px; /* Increased from 20px */
+
+    .timer {
+        font-size: 42px;
     }
-    .status {
-        font-size: 18px; /* Increased from 16px */
+
+    .score {
+        font-size: 42px;
     }
+}
+
+.game-logo {
+    max-width: 150px;
+    margin: 10px auto;
+}
+
+.feedback-container {
+    text-align: center;
+    width: 100%;
+}
+
+.answer-feedback {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.answer-feedback.correct {
+    color: #4CAF50;
+}
+
+.answer-feedback.incorrect {
+    color: #ff4444;
+}
+
+.next-button {
+    background-color: #fd7e14;
+    color: white;
+    padding: 15px 30px;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.next-button:hover {
+    background-color: #e06f12;
+}
+
+.menu-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid #fd7e14;
+    z-index: 1;
+}
+
+#main-menu-button {
+    font-size: 24px;
+    padding: 15px 30px;
 }
