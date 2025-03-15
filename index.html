@@ -4,39 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Minute</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file if it exists -->
 </head>
 <body>
-    <div class="game-container">
-        <!-- Start Screen -->
-        <div class="start-screen">
-            <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
-            <h1>Cyber Minute</h1>
-            <p>Answer as many true or false questions as you can in one minute. Good luck!</p>
-            <button id="start-button">Start</button>
-        </div>
-        <!-- Game Screen -->
-        <div class="game-screen hidden">
-            <div class="header">
-                <h1>Cyber Minute</h1>
-                <div class="status">
-                    <span id="timer">60</span> seconds left | Score: <span id="score">0</span>
-                </div>
-            </div>
-            <div class="question" id="question"></div>
-            <div class="buttons">
-                <button id="true-button">True</button>
-                <button id="false-button">False</button>
-            </div>
-        </div>
-        <!-- End Screen -->
-        <div class="end-screen hidden">
-            <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
-            <h1>Time's up!</h1>
-            <p>You answered <span id="final-score"></span> questions correctly.</p>
-            <button id="play-again">Play Again</button>
-        </div>
+    <!-- Main Menu -->
+    <div id="menu">
+        <h1>Cyber Minute</h1>
+        <button id="startButton">Start Game</button>
+        <button id="studyModeButton">Study Mode</button> <!-- New Study Mode Button -->
     </div>
+
+    <!-- Game Section (hidden by default) -->
+    <div id="game" style="display: none;">
+        <h1>Game Mode</h1>
+        <p>Timer: <span id="timer">60</span> seconds</p>
+        <p>Score: <span id="score">0</span></p>
+        <!-- Your game content goes here (e.g., questions, challenges) -->
+        <div id="gameContent">
+            <!-- Placeholder for game content -->
+            <p>Game content placeholder</p>
+        </div>
+        <button id="backToMenuFromGame">Back to Menu</button>
+    </div>
+
+    <!-- Study Mode Section (hidden by default) -->
+    <div id="studyMode" style="display: none;">
+        <h1>Study Mode</h1>
+        <p>No timer, no score. Explore freely!</p>
+        <!-- Your study mode content goes here (e.g., questions, challenges without time/score) -->
+        <div id="studyContent">
+            <!-- Placeholder for study mode content -->
+            <p>Study mode content placeholder</p>
+        </div>
+        <button id="backToMenuFromStudy">Back to Menu</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
