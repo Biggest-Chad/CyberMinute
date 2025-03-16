@@ -160,7 +160,7 @@ button:hover {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 20px;
+    margin: 10px 0;
 }
 
 #start-button, #study-button, #play-again {
@@ -296,4 +296,58 @@ body.incorrect {
 #main-menu-button {
     font-size: 24px;
     padding: 15px 30px;
+}
+
+.countdown-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10;
+}
+
+.countdown-number {
+    font-size: 120px;
+    font-weight: bold;
+    color: #fd7e14;
+    animation: countdownPulse 1s infinite;
+}
+
+@keyframes countdownPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.countdown-go {
+    color: #4CAF50;
+    animation: goAnimation 0.5s;
+}
+
+@keyframes goAnimation {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
