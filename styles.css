@@ -319,25 +319,26 @@ body.incorrect {
     font-size: 120px;
     font-weight: bold;
     color: #fd7e14;
-    animation: countdownPulse 1s infinite;
     text-align: center;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    animation: countdownPulse 1s infinite;
+    transform-origin: center center;
 }
 
 @keyframes countdownPulse {
     0% {
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
         opacity: 1;
     }
     50% {
-        transform: scale(1.1);
+        transform: translate(-50%, -50%) scale(1.1);
         opacity: 0.8;
     }
     100% {
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
         opacity: 1;
     }
 }
@@ -349,14 +350,14 @@ body.incorrect {
 
 @keyframes goAnimation {
     0% {
-        transform: scale(0.5);
+        transform: translate(-50%, -50%) scale(0.5);
         opacity: 0;
     }
     70% {
-        transform: scale(1.2);
+        transform: translate(-50%, -50%) scale(1.2);
     }
     100% {
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
         opacity: 1;
     }
 }
