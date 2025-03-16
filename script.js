@@ -211,8 +211,42 @@ function endGame() {
     document.getElementById('final-score').textContent = score;
 }
 
+// Start countdown sequence
+function startCountdown() {
+    return new Promise((resolve) => {
+        const countdownContainer = document.querySelector('.countdown-container');
+        const countdownNumber = document.querySelector('.countdown-number');
+        let count = 3;
+
+        // Reset initial state
+        countdownContainer.classList.remove('hidden');
+        countdownNumber.classList.remove('countdown-go');
+        countdownNumber.textContent = count;
+
+        function updateCountdown() {
+            if (count === 1) {
+                countdownNumber.textContent = 'Go!';
+                countdownNumber.classList.add('countdown-go');
+                
+                // Final cleanup and hide
+                setTimeout(() => {
+                    countdownContainer.style.display = 'none';
+                    resolve();
+                }, 1000);
+            } else if (count > 1) {
+                count--;
+                countdownNumber.textContent = count;
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        // Start the countdown
+        setTimeout(updateCountdown, 1000);
+    });
+}
+
 // Start or restart the game
-function startGame(studyMode = false) {
+async function startGame(studyMode = false) {
     score = 0;
     currentQuestionIndex = 0;
     timer = 60;
@@ -228,6 +262,14 @@ function startGame(studyMode = false) {
     const menuContainer = document.querySelector('.menu-container');
     const feedbackContainer = document.querySelector('.feedback-container');
     const answerButtons = document.querySelector('.answer-buttons');
+    const countdownContainer = document.querySelector('.countdown-container');
+    
+    document.querySelector('.start-screen').classList.add('hidden');
+    document.querySelector('.game-screen').classList.remove('hidden');
+    document.querySelector('.end-screen').classList.add('hidden');
+    
+    // Ensure countdown container is hidden initially
+    countdownContainer.style.display = 'none';
     
     if (studyMode) {
         gameTitle.textContent = 'Study Mode';
@@ -237,6 +279,7 @@ function startGame(studyMode = false) {
         menuContainer.classList.remove('hidden');
         feedbackContainer.classList.add('hidden');
         answerButtons.classList.remove('hidden');
+        loadQuestion();
     } else {
         gameTitle.textContent = 'Cyber Minute';
         gameLogo.classList.add('hidden');
@@ -248,14 +291,12 @@ function startGame(studyMode = false) {
         document.getElementById('score').textContent = score;
         document.getElementById('timer').textContent = timer;
         document.getElementById('timer').classList.remove('warning');
+        
+        // Wait for countdown before starting the game
+        await startCountdown();
         startTimer();
+        loadQuestion();
     }
-    
-    document.querySelector('.start-screen').classList.add('hidden');
-    document.querySelector('.game-screen').classList.remove('hidden');
-    document.querySelector('.end-screen').classList.add('hidden');
-    
-    loadQuestion();
 }
 
 // Event listeners
