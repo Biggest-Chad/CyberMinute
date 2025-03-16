@@ -308,7 +308,9 @@ body.incorrect {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 10;
+    z-index: 9999; /* Increased z-index to ensure it's above all other elements */
+    width: 100%;
+    height: 100%;
 }
 
 .countdown-number {
@@ -316,6 +318,12 @@ body.incorrect {
     font-weight: bold;
     color: #fd7e14;
     animation: countdownPulse 1s infinite;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes countdownPulse {
@@ -349,5 +357,11 @@ body.incorrect {
     100% {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .countdown-number {
+        font-size: 80px; /* Smaller font size for mobile */
     }
 }
