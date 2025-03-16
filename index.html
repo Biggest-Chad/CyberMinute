@@ -12,14 +12,22 @@
         <div class="start-screen">
             <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
             <h1>Cyber Minute</h1>
-            <p>Answer as many true or false questions as you can in one minute. Good luck!</p>
-            <div class="menu-buttons">
+            <h2>Welcome</h2>
+            <h2>You have 60 seconds to answer as many true or false questions as you can</h2>
+            <h2>Good luck!</h2>
+            <div class="menu-buttons">  
                 <button id="start-button">Start</button>
+            </div>
+            <h2>Use the Study Mode to casually answer questions without a timer</h2>
+            <div class="menu-buttons">
                 <button id="study-button">Study Mode</button>
             </div>
         </div>
         <!-- Game Screen -->
         <div class="game-screen hidden">
+            <div class="countdown-container hidden">
+                <div class="countdown-number">3</div>
+            </div>
             <div class="header">
                 <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo game-logo hidden">
                 <h1 id="game-title">Cyber Minute</h1>
@@ -54,6 +62,9 @@
             <h2>You answered <span id="final-score"></span> questions correctly.</h2>
             <div class="menu-buttons">
                 <button id="play-again">Play Again</button>
+            </div>
+            <h2>Use the Study Mode to casually answer questions without a timer</h2>
+            <div class="menu-buttons">
                 <button id="end-study-button">Study Mode</button>
             </div>
         </div>
