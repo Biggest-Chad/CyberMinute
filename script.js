@@ -72,6 +72,7 @@ let timer = 60;
 let timerInterval;
 let isStudyMode = false;
 let usedQuestions = new Set();
+let highScore = localStorage.getItem('cyberMinuteHighScore') || 0;
 
 // Shuffle function for randomizing questions
 function shuffle(array) {
@@ -204,11 +205,28 @@ function startTimer() {
     }, 1000);
 }
 
+// Update high score display
+function updateHighScoreDisplay() {
+    document.getElementById('high-score-display').textContent = highScore;
+    document.getElementById('end-high-score-display').textContent = highScore;
+}
+
+// Check and update high score
+function checkHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('cyberMinuteHighScore', highScore);
+        updateHighScoreDisplay();
+    }
+}
+
 // End the game and show the final score
 function endGame() {
     document.querySelector('.game-screen').classList.add('hidden');
     document.querySelector('.end-screen').classList.remove('hidden');
     document.getElementById('final-score').textContent = score;
+    checkHighScore();
+    updateHighScoreDisplay();
 }
 
 // Start countdown sequence
@@ -270,6 +288,9 @@ async function startGame(studyMode = false) {
     
     // Ensure countdown container is hidden initially
     countdownContainer.style.display = 'none';
+    
+    // Update high score display
+    updateHighScoreDisplay();
     
     if (studyMode) {
         gameTitle.textContent = 'Study Mode';
