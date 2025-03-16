@@ -219,7 +219,7 @@ function startCountdown() {
         let count = 3;
 
         // Reset initial state
-        countdownContainer.classList.remove('hidden');
+        countdownContainer.style.display = 'flex'; // Use display: flex instead of removing hidden class
         countdownNumber.classList.remove('countdown-go');
         countdownNumber.textContent = count;
 
