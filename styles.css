@@ -309,10 +309,10 @@ body.incorrect {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 9999;
-    width: 100vw;
-    height: 100vh;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
 }
 
 .countdown-number {
@@ -321,10 +321,10 @@ body.incorrect {
     color: #fd7e14;
     animation: countdownPulse 1s infinite;
     text-align: center;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 @keyframes countdownPulse {
@@ -362,9 +362,22 @@ body.incorrect {
 }
 
 @media (max-width: 600px) {
+    .countdown-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .countdown-number {
         font-size: 80px;
-        position: fixed;
+        position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
