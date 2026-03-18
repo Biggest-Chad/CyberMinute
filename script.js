@@ -103,7 +103,7 @@ const questions = [
     { question: "You should install apps on your work phone from any source.", answer: false },
     { question: "Keeping your device's software up to date improves security.", answer: true },
     { question: "Sharing your work device with family members is a good practice.", answer: false },
-    { question: "Turning off Bluetooth when not in use can reduce security risks.", answer: true }
+    { question: "Turning off Bluetooth when not in use can reduce security risks.", answer: true },
     { question: "Always lock your screen before leaving your desk, even for a short time.", answer: true },
     { question: "Connecting your work device to public or unsecured Wi-Fi networks is safe.", answer: false },
     { question: "Using a VPN is especially important when working remotely or on public networks.", answer: true },
