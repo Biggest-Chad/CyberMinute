@@ -1,6 +1,6 @@
 // Array of 50 true or false questions
 const questions = [
-    // Email Phishing (8 questions)
+    // Email Phishing 
     { question: "Phishing emails often contain spelling and grammar mistakes.", answer: true },
     { question: "It's safe to click on links in emails from unknown senders if the email looks professional.", answer: false },
     { question: "Phishing emails can pretend to come from a trusted company.", answer: true },
@@ -9,7 +9,14 @@ const questions = [
     { question: "Hovering over a link in an email can reveal if it's suspicious.", answer: true },
     { question: "Phishing only happens through email, not text messages.", answer: false },
     { question: "All emails from your bank are safe to trust without checking.", answer: false },
-
+    { question: "Phishing emails often try to create urgency to make you act without thinking.", answer: true },
+    { question: "The sender name displayed in your inbox is always the real sender.", answer: false },
+    { question: "Hackers can create fake websites that look almost identical to legitimate ones.", answer: true },
+    { question: "Verifying suspicious requests by calling the company using a publicly known phone number is a good practice.", answer: true },
+    { question: "Phishing attempts can include fake security alerts from your IT department.", answer: true },
+    { question: "It's safe to click links in emails if they match the company's branding perfectly.", answer: false },
+    { question: "Business email compromise is a sophisticated form of phishing attack.", answer: true },
+    { question: "You should never enter login credentials on a website reached via an email link.", answer: true },
     // Password Reuse (7 questions)
     { question: "Using the same password for multiple accounts increases the risk of a security breach.", answer: true },
     { question: "It's okay to use the same password for all your work accounts if it's strong.", answer: false },
@@ -18,6 +25,13 @@ const questions = [
     { question: "Password managers can help you avoid reusing passwords.", answer: true },
     { question: "Short passwords are just as secure as long ones if they're unique.", answer: false },
     { question: "You should change your passwords regularly to stay secure.", answer: true },
+    { question: "Using the same password on multiple websites puts all those accounts at risk if one is breached.", answer: true },
+    { question: "Password managers help generate and store strong, unique passwords for each account.", answer: true },
+    { question: "It's acceptable to reuse passwords if you add a number at the end for each site.", answer: false },
+    { question: "A passphrase made of several random words is often more secure than a short complex password.", answer: true },
+    { question: "You should use the same password for low-risk sites like news websites.", answer: false },
+    { question: "Weak passwords can be guessed or cracked very quickly by hackers.", answer: true },
+    { question: "Multi-factor authentication can help protect your accounts even if your password is reused and stolen.", answer: true },
 
     // Email Scams (7 questions)
     { question: "Emails asking for urgent action or threatening consequences are likely scams.", answer: true },
@@ -27,7 +41,13 @@ const questions = [
     { question: "Emails asking for your password are legitimate if they're from IT.", answer: false },
     { question: "You should report suspicious emails to your IT department.", answer: true },
     { question: "Email scams only target businesses, not individuals.", answer: false },
-
+    { question: "Emails promising large sums of money for helping transfer funds are usually scams.", answer: true },
+    { question: "Fake technical support emails claiming your computer has a virus are common scams.", answer: true },
+    { question: "You should always double-check email addresses carefully, looking for subtle misspellings.", answer: true },
+    { question: "Scammers may impersonate colleagues to request wire transfers or gift cards.", answer: true },
+    { question: "If an email asks you to pay an unexpected invoice urgently, it could be fraudulent.", answer: true },
+    { question: "Reporting scam emails helps protect others in your organization.", answer: true },
+    { question: "Email scams can lead to financial loss or data theft for both companies and individuals.", answer: true },
     // Avoiding Virus Infections (7 questions)
     { question: "Installing antivirus software can help protect your computer from viruses.", answer: true },
     { question: "Downloading software from unofficial sources is safe if it's free.", answer: false },
@@ -36,6 +56,13 @@ const questions = [
     { question: "Viruses can only spread through email, not USB drives.", answer: false },
     { question: "Antivirus software guarantees 100% protection from all viruses.", answer: false },
     { question: "Clicking 'unsubscribe' on spam emails can stop viruses.", answer: false },
+    { question: "Malware can be disguised as legitimate software updates or downloads.", answer: true },
+    { question: "Visiting compromised websites can (rarely) automatically download malware to your computer.", answer: true },
+    { question: "Keeping your operating system and applications updated is important for security.", answer: true },
+    { question: "USB drives from unknown sources should never be plugged into work computers without scanning.", answer: true },
+    { question: "Antivirus programs should be kept running and updated at all times.", answer: true },
+    { question: "Opening PDFs or Word documents from unknown sources is completely safe.", answer: false },
+    { question: "Using a firewall provides an additional layer of protection against viruses.", answer: true },
 
     // Reacting to Ransomware (7 questions)
     { question: "If you suspect a ransomware attack, you should disconnect your device from the network.", answer: true },
@@ -45,6 +72,13 @@ const questions = [
     { question: "Backups can help you recover from a ransomware attack without paying.", answer: true },
     { question: "Ransomware only affects personal computers, not company devices.", answer: false },
     { question: "Restarting your computer will remove ransomware.", answer: false },
+    { question: "In a suspected ransomware incident, you should avoid using the infected device for any work.", answer: true },
+    { question: "Ransomware attacks often spread to other computers on the same network.", answer: true },
+    { question: "You should never pay the ransom demanded by attackers.", answer: true },
+    { question: "Having recent, clean backups stored separately can help recover from ransomware.", answer: true },
+    { question: "Ransomware can also steal your data before encrypting your files.", answer: true },
+    { question: "Immediately notifying your supervisor or IT helpdesk is crucial during a ransomware attack.", answer: true },
+    { question: "Trying to remove ransomware yourself with random tools is recommended.", answer: false },
 
     // Personal Data Privacy (7 questions)
     { question: "Sharing your personal information on social media can increase the risk of identity theft.", answer: true },
@@ -54,6 +88,13 @@ const questions = [
     { question: "Two-factor authentication makes your accounts more secure.", answer: true },
     { question: "Your email address is not considered personal information.", answer: false },
     { question: "Posting vacation photos while away can alert burglars.", answer: true },
+    { question: "Oversharing personal details on social media can help attackers build a profile on you.", answer: true },
+    { question: "Using public Wi-Fi without a VPN puts your data at higher risk of interception.", answer: true },
+    { question: "Your phone number and address are considered sensitive personal information.", answer: true },
+    { question: "Accepting cookies on every website is harmless for privacy.", answer: false },
+    { question: "Two-factor authentication adds an important extra layer of protection to your accounts.", answer: true },
+    { question: "You have the right to request companies delete your personal data in many countries.", answer: true },
+    { question: "Posting photos of your workplace or ID badges online can reveal security information.", answer: true },
 
     // Secure Device Usage (7 questions)
     { question: "Locking your computer when you step away from your desk is a good security practice.", answer: true },
@@ -63,6 +104,14 @@ const questions = [
     { question: "Keeping your device's software up to date improves security.", answer: true },
     { question: "Sharing your work device with family members is a good practice.", answer: false },
     { question: "Turning off Bluetooth when not in use can reduce security risks.", answer: true }
+    { question: "Always lock your screen before leaving your desk, even for a short time.", answer: true },
+    { question: "Connecting your work device to public or unsecured Wi-Fi networks is safe.", answer: false },
+    { question: "Using a VPN is especially important when working remotely or on public networks.", answer: true },
+    { question: "You should regularly check which apps have permission to access your camera and microphone.", answer: true },
+    { question: "Physical security like not leaving devices visible in your car is important.", answer: true },
+    { question: "Enabling automatic updates ensures your device has the latest security patches.", answer: true },
+    { question: "It's fine to let friends or family use your work laptop for personal tasks.", answer: false },
+    
 ];
 
 // Game variables
