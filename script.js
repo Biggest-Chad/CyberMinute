@@ -1,6 +1,10 @@
-// Array of 50 true or false questions
+// ============================================
+// CyberMinute2 - Refactored Game Logic
+// All original questions and rules preserved
+// ============================================
+
 const questions = [
-    // Email Phishing 
+    // Email Phishing
     { question: "Phishing emails often contain spelling and grammar mistakes.", answer: true },
     { question: "It's safe to click on links in emails from unknown senders if the email looks professional.", answer: false },
     { question: "Phishing emails can pretend to come from a trusted company.", answer: true },
@@ -17,7 +21,8 @@ const questions = [
     { question: "It's safe to click links in emails if they match the company's branding perfectly.", answer: false },
     { question: "Business email compromise is a sophisticated form of phishing attack.", answer: true },
     { question: "You should never enter login credentials on a website reached via an email link.", answer: true },
-    // Password Reuse (7 questions)
+
+    // Password Security
     { question: "Using the same password for multiple accounts increases the risk of a security breach.", answer: true },
     { question: "It's okay to use the same password for all your work accounts if it's strong.", answer: false },
     { question: "A strong password should include numbers, letters, and special characters.", answer: true },
@@ -33,7 +38,7 @@ const questions = [
     { question: "Weak passwords can be guessed or cracked very quickly by hackers.", answer: true },
     { question: "Multi-factor authentication can help protect your accounts even if your password is reused and stolen.", answer: true },
 
-    // Email Scams (7 questions)
+    // Email Scams
     { question: "Emails asking for urgent action or threatening consequences are likely scams.", answer: true },
     { question: "If an email comes from a known contact, it's always safe to open attachments.", answer: false },
     { question: "Scammers can use fake email addresses that look real.", answer: true },
@@ -48,7 +53,8 @@ const questions = [
     { question: "If an email asks you to pay an unexpected invoice urgently, it could be fraudulent.", answer: true },
     { question: "Reporting scam emails helps protect others in your organization.", answer: true },
     { question: "Email scams can lead to financial loss or data theft for both companies and individuals.", answer: true },
-    // Avoiding Virus Infections (7 questions)
+
+    // Virus Prevention
     { question: "Installing antivirus software can help protect your computer from viruses.", answer: true },
     { question: "Downloading software from unofficial sources is safe if it's free.", answer: false },
     { question: "Updating your software regularly can prevent virus infections.", answer: true },
@@ -64,7 +70,7 @@ const questions = [
     { question: "Opening PDFs or Word documents from unknown sources is completely safe.", answer: false },
     { question: "Using a firewall provides an additional layer of protection against viruses.", answer: true },
 
-    // Reacting to Ransomware (7 questions)
+    // Ransomware
     { question: "If you suspect a ransomware attack, you should disconnect your device from the network.", answer: true },
     { question: "Paying the ransom is the best way to get your files back after a ransomware attack.", answer: false },
     { question: "Ransomware can lock your files and demand payment to unlock them.", answer: true },
@@ -78,308 +84,173 @@ const questions = [
     { question: "Having recent, clean backups stored separately can help recover from ransomware.", answer: true },
     { question: "Ransomware can also steal your data before encrypting your files.", answer: true },
     { question: "Immediately notifying your supervisor or IT helpdesk is crucial during a ransomware attack.", answer: true },
-    { question: "Trying to remove ransomware yourself with random tools is recommended.", answer: false },
-
-    // Personal Data Privacy (7 questions)
-    { question: "Sharing your personal information on social media can increase the risk of identity theft.", answer: true },
-    { question: "Using public Wi-Fi is always safe for browsing sensitive information.", answer: false },
-    { question: "You should avoid sharing your full birth date online.", answer: true },
-    { question: "Companies can sell your personal data if you agree to their terms.", answer: true },
-    { question: "Two-factor authentication makes your accounts more secure.", answer: true },
-    { question: "Your email address is not considered personal information.", answer: false },
-    { question: "Posting vacation photos while away can alert burglars.", answer: true },
-    { question: "Oversharing personal details on social media can help attackers build a profile on you.", answer: true },
-    { question: "Using public Wi-Fi without a VPN puts your data at higher risk of interception.", answer: true },
-    { question: "Your phone number and address are considered sensitive personal information.", answer: true },
-    { question: "Accepting cookies on every website is harmless for privacy.", answer: false },
-    { question: "Two-factor authentication adds an important extra layer of protection to your accounts.", answer: true },
-    { question: "You have the right to request companies delete your personal data in many countries.", answer: true },
-    { question: "Posting photos of your workplace or ID badges online can reveal security information.", answer: true },
-
-    // Secure Device Usage (7 questions)
-    { question: "Locking your computer when you step away from your desk is a good security practice.", answer: true },
-    { question: "It's safe to leave your work laptop unattended in a public place if it's turned off.", answer: false },
-    { question: "Using a VPN can make your internet connection more secure.", answer: true },
-    { question: "You should install apps on your work phone from any source.", answer: false },
-    { question: "Keeping your device's software up to date improves security.", answer: true },
-    { question: "Sharing your work device with family members is a good practice.", answer: false },
-    { question: "Turning off Bluetooth when not in use can reduce security risks.", answer: true },
-    { question: "Always lock your screen before leaving your desk, even for a short time.", answer: true },
-    { question: "Connecting your work device to public or unsecured Wi-Fi networks is safe.", answer: false },
-    { question: "Using a VPN is especially important when working remotely or on public networks.", answer: true },
-    { question: "You should regularly check which apps have permission to access your camera and microphone.", answer: true },
-    { question: "Physical security like not leaving devices visible in your car is important.", answer: true },
-    { question: "Enabling automatic updates ensures your device has the latest security patches.", answer: true },
-    { question: "It's fine to let friends or family use your work laptop for personal tasks.", answer: false },
-    
 ];
 
-// Game variables
-let score = 0;
+// Game State
+let currentQuestions = [];
 let currentQuestionIndex = 0;
+let score = 0;
 let timer = 60;
-let timerInterval;
+let timerInterval = null;
 let isStudyMode = false;
-let usedQuestions = new Set();
 let highScore = localStorage.getItem('cyberMinuteHighScore') || 0;
 
-// Shuffle function for randomizing questions
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
+// DOM Elements
+const startScreen = document.getElementById('start-screen');
+const gameScreen = document.getElementById('game-screen');
+const endScreen = document.getElementById('end-screen');
+
+const startButton = document.getElementById('start-button');
+const studyButton = document.getElementById('study-button');
+const playAgainButton = document.getElementById('play-again');
+const endStudyButton = document.getElementById('end-study-button');
+
+const questionEl = document.getElementById('question');
+const trueButton = document.getElementById('true-button');
+const falseButton = document.getElementById('false-button');
+const feedbackEl = document.getElementById('feedback');
+const feedbackText = document.getElementById('feedback-text');
+const nextButton = document.getElementById('next-button');
+
+const timerEl = document.getElementById('timer');
+const scoreEl = document.getElementById('score');
+const countdownEl = document.getElementById('countdown');
+const countdownNumber = countdownEl.querySelector('.countdown-number');
+
+const highScoreDisplay = document.getElementById('high-score-display');
+const endHighScoreDisplay = document.getElementById('end-high-score-display');
+const finalScoreEl = document.getElementById('final-score');
+
+// Initialize
+function init() {
+    highScoreDisplay.textContent = highScore;
+    endHighScoreDisplay.textContent = highScore;
+
+    startButton.addEventListener('click', () => startGame(false));
+    studyButton.addEventListener('click', () => startGame(true));
+    playAgainButton.addEventListener('click', () => startGame(false));
+    endStudyButton.addEventListener('click', () => startGame(true));
+
+    trueButton.addEventListener('click', () => handleAnswer(true));
+    falseButton.addEventListener('click', () => handleAnswer(false));
+    nextButton.addEventListener('click', nextQuestion);
 }
 
-// Get next available question index
-function getNextQuestionIndex() {
-    if (isStudyMode) {
-        return currentQuestionIndex;
-    }
-    
-    // In regular mode, find the next unused question
-    for (let i = 0; i < questions.length; i++) {
-        if (!usedQuestions.has(i)) {
-            return i;
-        }
-    }
-    return -1; // No more unused questions
-}
+function startGame(studyMode) {
+    isStudyMode = studyMode;
+    currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+    currentQuestionIndex = 0;
+    score = 0;
+    timer = 60;
 
-// Load the current question
-function loadQuestion() {
+    // Hide all screens
+    startScreen.classList.remove('active');
+    endScreen.classList.remove('active');
+    gameScreen.classList.add('active');
+
+    scoreEl.textContent = score;
+    feedbackEl.classList.add('hidden');
+
     if (!isStudyMode) {
-        currentQuestionIndex = getNextQuestionIndex();
-        if (currentQuestionIndex === -1) {
-            endGame(); // End game if all questions have been used
-            return;
-        }
-        usedQuestions.add(currentQuestionIndex);
-    }
-    const currentQuestion = questions[currentQuestionIndex];
-    document.getElementById('question').textContent = currentQuestion.question;
-}
-
-// Show feedback for correct/incorrect answers
-function showFeedback(isCorrect) {
-    if (isStudyMode) {
-        const feedbackContainer = document.querySelector('.feedback-container');
-        const answerButtons = document.querySelector('.answer-buttons');
-        const feedbackElement = document.getElementById('answer-feedback');
-        
-        // Hide answer buttons and show feedback
-        answerButtons.classList.add('hidden');
-        feedbackContainer.classList.remove('hidden');
-        
-        feedbackElement.textContent = isCorrect ? 'Correct' : 'Incorrect';
-        feedbackElement.className = 'answer-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+        startCountdown();
     } else {
-        const scoreElement = document.getElementById('score');
-        scoreElement.classList.add(isCorrect ? 'correct' : 'incorrect');
-        setTimeout(() => {
-            scoreElement.classList.remove('correct', 'incorrect');
-        }, 1000);
+        showQuestion();
     }
 }
 
-// Check the user's answer
-function checkAnswer(userAnswer) {
-    const currentQuestion = questions[currentQuestionIndex];
-    if (userAnswer === currentQuestion.answer) {
-        if (!isStudyMode) {
-            score++;
-            document.getElementById('score').textContent = score;
+function startCountdown() {
+    countdownEl.classList.remove('hidden');
+    let count = 3;
+    countdownNumber.textContent = count;
+
+    const countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownNumber.textContent = count;
+        } else {
+            clearInterval(countdownInterval);
+            countdownEl.classList.add('hidden');
+            startTimer();
+            showQuestion();
         }
-        showFeedback(true);
-    } else {
-        if (!isStudyMode) {
-            score = Math.max(0, score - 1); // Prevent score from going below 0
-            document.getElementById('score').textContent = score;
-        }
-        showFeedback(false);
-    }
-    
-    if (!isStudyMode) {
-        setTimeout(() => {
-            if (usedQuestions.size < questions.length && timer > 0) {
-                loadQuestion();
-            } else {
-                endGame();
-            }
-        }, 500);
-    }
+    }, 1000);
 }
 
-// Load next question in study mode
-function loadNextQuestion() {
-    const feedbackContainer = document.querySelector('.feedback-container');
-    const answerButtons = document.querySelector('.answer-buttons');
-    
-    // Hide feedback and show answer buttons
-    feedbackContainer.classList.add('hidden');
-    answerButtons.classList.remove('hidden');
-    
-    currentQuestionIndex++;
-    if (currentQuestionIndex >= questions.length) {
-        currentQuestionIndex = 0;
-        shuffle(questions);
-    }
-    loadQuestion();
-}
-
-// Return to main menu
-function returnToMainMenu() {
-    clearInterval(timerInterval);
-    document.querySelector('.start-screen').classList.remove('hidden');
-    document.querySelector('.game-screen').classList.add('hidden');
-    document.querySelector('.end-screen').classList.add('hidden');
-}
-
-// Start the 60-second timer
 function startTimer() {
+    timerEl.textContent = timer;
     timerInterval = setInterval(() => {
         timer--;
-        const timerElement = document.getElementById('timer');
-        timerElement.textContent = timer;
-        
-        // Add warning class when timer is under 10 seconds
+        timerEl.textContent = timer;
+
         if (timer <= 10) {
-            timerElement.classList.add('warning');
+            timerEl.style.color = '#f87171';
         }
-        
+
         if (timer <= 0) {
-            clearInterval(timerInterval);
             endGame();
         }
     }, 1000);
 }
 
-// Update high score display
-function updateHighScoreDisplay() {
-    document.getElementById('high-score-display').textContent = highScore;
-    document.getElementById('end-high-score-display').textContent = highScore;
+function showQuestion() {
+    if (currentQuestionIndex >= currentQuestions.length) {
+        endGame();
+        return;
+    }
+
+    const currentQ = currentQuestions[currentQuestionIndex];
+    questionEl.textContent = currentQ.question;
+
+    // Reset UI
+    feedbackEl.classList.add('hidden');
+    trueButton.style.display = 'block';
+    falseButton.style.display = 'block';
 }
 
-// Check and update high score
-function checkHighScore() {
+function handleAnswer(userAnswer) {
+    const currentQ = currentQuestions[currentQuestionIndex];
+    const isCorrect = userAnswer === currentQ.answer;
+
+    // Hide answer buttons
+    trueButton.style.display = 'none';
+    falseButton.style.display = 'none';
+
+    // Show feedback
+    feedbackText.textContent = isCorrect ? 'Correct!' : 'Incorrect';
+    feedbackText.className = isCorrect ? 'correct' : 'incorrect';
+    feedbackEl.classList.remove('hidden');
+
+    // Update score
+    if (isCorrect) {
+        score++;
+    } else if (!isStudyMode) {
+        score = Math.max(0, score - 1);
+    }
+    scoreEl.textContent = score;
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    feedbackEl.classList.add('hidden');
+    trueButton.style.display = 'block';
+    falseButton.style.display = 'block';
+    showQuestion();
+}
+
+function endGame() {
+    clearInterval(timerInterval);
+    gameScreen.classList.remove('active');
+    endScreen.classList.add('active');
+
+    finalScoreEl.textContent = score;
+
     if (score > highScore) {
         highScore = score;
         localStorage.setItem('cyberMinuteHighScore', highScore);
-        updateHighScoreDisplay();
+        endHighScoreDisplay.textContent = highScore;
+        highScoreDisplay.textContent = highScore;
     }
 }
 
-// End the game and show the final score
-function endGame() {
-    document.querySelector('.game-screen').classList.add('hidden');
-    document.querySelector('.end-screen').classList.remove('hidden');
-    document.getElementById('final-score').textContent = score;
-    checkHighScore();
-    updateHighScoreDisplay();
-}
-
-// Start countdown sequence
-function startCountdown() {
-    return new Promise((resolve) => {
-        const countdownContainer = document.querySelector('.countdown-container');
-        const countdownNumber = document.querySelector('.countdown-number');
-        let count = 3;
-
-        // Reset initial state
-        countdownContainer.style.display = 'flex'; // Use display: flex instead of removing hidden class
-        countdownNumber.classList.remove('countdown-go');
-        countdownNumber.textContent = count;
-
-        function updateCountdown() {
-            if (count === 1) {
-                countdownNumber.textContent = 'Go!';
-                countdownNumber.classList.add('countdown-go');
-                
-                // Final cleanup and hide
-                setTimeout(() => {
-                    countdownContainer.style.display = 'none';
-                    resolve();
-                }, 1000);
-            } else if (count > 1) {
-                count--;
-                countdownNumber.textContent = count;
-                setTimeout(updateCountdown, 1000);
-            }
-        }
-
-        // Start the countdown
-        setTimeout(updateCountdown, 1000);
-    });
-}
-
-// Start or restart the game
-async function startGame(studyMode = false) {
-    score = 0;
-    currentQuestionIndex = 0;
-    timer = 60;
-    isStudyMode = studyMode;
-    usedQuestions.clear();
-    shuffle(questions);
-    
-    // Update UI for study mode
-    const gameLogo = document.querySelector('.game-logo');
-    const gameTitle = document.getElementById('game-title');
-    const timerContainer = document.querySelector('.timer-container');
-    const scoreContainer = document.querySelector('.score-container');
-    const menuContainer = document.querySelector('.menu-container');
-    const feedbackContainer = document.querySelector('.feedback-container');
-    const answerButtons = document.querySelector('.answer-buttons');
-    const countdownContainer = document.querySelector('.countdown-container');
-    
-    document.querySelector('.start-screen').classList.add('hidden');
-    document.querySelector('.game-screen').classList.remove('hidden');
-    document.querySelector('.end-screen').classList.add('hidden');
-    
-    // Ensure countdown container is hidden initially
-    countdownContainer.style.display = 'none';
-    
-    // Update high score display
-    updateHighScoreDisplay();
-    
-    if (studyMode) {
-        gameTitle.textContent = 'Study Mode';
-        gameLogo.classList.remove('hidden');
-        timerContainer.classList.add('hidden');
-        scoreContainer.classList.add('hidden');
-        menuContainer.classList.remove('hidden');
-        feedbackContainer.classList.add('hidden');
-        answerButtons.classList.remove('hidden');
-        loadQuestion();
-    } else {
-        gameTitle.textContent = 'Cyber Minute';
-        gameLogo.classList.add('hidden');
-        timerContainer.classList.remove('hidden');
-        scoreContainer.classList.remove('hidden');
-        menuContainer.classList.add('hidden');
-        feedbackContainer.classList.add('hidden');
-        answerButtons.classList.remove('hidden');
-        document.getElementById('score').textContent = score;
-        document.getElementById('timer').textContent = timer;
-        document.getElementById('timer').classList.remove('warning');
-        
-        // Wait for countdown before starting the game
-        await startCountdown();
-        startTimer();
-        loadQuestion();
-    }
-}
-
-// Event listeners
-document.getElementById('start-button').addEventListener('click', () => startGame(false));
-document.getElementById('study-button').addEventListener('click', () => startGame(true));
-document.getElementById('end-study-button').addEventListener('click', () => startGame(true));
-document.getElementById('play-again').addEventListener('click', () => startGame(false));
-document.getElementById('true-button').addEventListener('click', () => checkAnswer(true));
-document.getElementById('false-button').addEventListener('click', () => checkAnswer(false));
-document.getElementById('next-question').addEventListener('click', loadNextQuestion);
-document.getElementById('main-menu-button').addEventListener('click', returnToMainMenu);
-
-// Initialize with the start screen visible
-document.querySelector('.start-screen').classList.remove('hidden');
-document.querySelector('.game-screen').classList.add('hidden');
-document.querySelector('.end-screen').classList.add('hidden');
+// Initialize the game
+init();

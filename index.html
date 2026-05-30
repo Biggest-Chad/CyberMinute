@@ -7,74 +7,86 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
+    <div class="app-container">
+
         <!-- Start Screen -->
-        <div class="start-screen">
-            <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
-            <h1>Cyber Minute</h1>
-            <h2>Welcome</h2>
-            <h2>You have 60 seconds to answer as many true or false questions as you can</h2>
-            <h2>Good luck!</h2>
-            <div class="menu-buttons">  
-                <button id="start-button">Start</button>
-            </div>
-            <h2>Use the Study Mode to casually answer questions without a timer</h2>
-            <div class="menu-buttons">
-                <button id="study-button">Study Mode</button>
-            </div>
-            <div class="high-score">
-                <h2>High Score: <span id="high-score-display">0</span></h2>
+        <div id="start-screen" class="screen active">
+            <div class="start-content">
+                <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies" class="logo">
+                
+                <h1>Cyber Minute</h1>
+                <p class="tagline">Test your cybersecurity knowledge</p>
+
+                <div class="mode-buttons">
+                    <button id="start-button" class="btn btn-primary">Start 60-Second Challenge</button>
+                    <button id="study-button" class="btn btn-secondary">Study Mode</button>
+                </div>
+
+                <div class="high-score-box">
+                    <span>High Score</span>
+                    <span id="high-score-display" class="high-score-value">0</span>
+                </div>
             </div>
         </div>
+
         <!-- Game Screen -->
-        <div class="game-screen hidden">
-            <div class="countdown-container hidden">
-                <div class="countdown-number">3</div>
-            </div>
-            <div class="header">
-                <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo game-logo hidden">
-                <h1 id="game-title">Cyber Minute</h1>
-                <div class="timer-container">
-                    <span id="timer" class="timer">60</span>
-                    <span class="timer-label">seconds left</span>
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="timer">
+                    <span id="timer">60</span>
+                    <span class="timer-label">seconds</span>
+                </div>
+                <div class="score">
+                    <span id="score">0</span>
                 </div>
             </div>
-            <div class="question" id="question"></div>
-            <div class="buttons">
+
+            <!-- Countdown -->
+            <div id="countdown" class="countdown hidden">
+                <div class="countdown-number"></div>
+            </div>
+
+            <div class="question-container">
+                <div id="question" class="question"></div>
+            </div>
+
+            <div class="answer-section">
                 <div class="answer-buttons">
-                    <button id="true-button">True</button>
-                    <button id="false-button">False</button>
+                    <button id="true-button" class="btn btn-answer true">True</button>
+                    <button id="false-button" class="btn btn-answer false">False</button>
                 </div>
-                <div class="feedback-container hidden">
-                    <div id="answer-feedback" class="answer-feedback"></div>
-                    <button id="next-question" class="next-button">Next Question</button>
+
+                <div id="feedback" class="feedback hidden">
+                    <div id="feedback-text"></div>
+                    <button id="next-button" class="btn btn-next">Next Question</button>
                 </div>
-            </div>
-            <div class="score-container">
-                <div class="score-label">Score</div>
-                <div id="score" class="score">0</div>
-            </div>
-            <div class="menu-container hidden">
-                <button id="main-menu-button">Main Menu</button>
             </div>
         </div>
+
         <!-- End Screen -->
-        <div class="end-screen hidden">
-            <img src="https://www.skywavetechnologies.com/wp-content/uploads/2015/12/swt-logo.png" alt="Skywave Technologies Logo" class="logo">
-            <h1>Time's up!</h1>
-            <h2>You answered <span id="final-score"></span> questions correctly.</h2>
-            <div class="menu-buttons">
-                <button id="play-again">Play Again</button>
-            </div>
-            <h2>Use the Study Mode to casually answer questions without a timer</h2>
-            <div class="menu-buttons">
-                <button id="end-study-button">Study Mode</button>
-            </div>
-            <div class="high-score">
-                <h2>High Score: <span id="end-high-score-display">0</span></h2>
+        <div id="end-screen" class="screen">
+            <div class="end-content">
+                <h1>Time's Up!</h1>
+                <div class="final-score">
+                    <span>You answered</span>
+                    <span id="final-score" class="big-number">0</span>
+                    <span>questions correctly</span>
+                </div>
+
+                <div class="mode-buttons">
+                    <button id="play-again" class="btn btn-primary">Play Again</button>
+                    <button id="end-study-button" class="btn btn-secondary">Study Mode</button>
+                </div>
+
+                <div class="high-score-box">
+                    <span>High Score</span>
+                    <span id="end-high-score-display" class="high-score-value">0</span>
+                </div>
             </div>
         </div>
+
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
