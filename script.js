@@ -108,6 +108,10 @@ const startButton = document.getElementById('start-button');
 const studyButton = document.getElementById('study-button');
 const playAgainButton = document.getElementById('play-again');
 const endStudyButton = document.getElementById('end-study-button');
+const menuButton = document.getElementById('menu-button');
+const menuModal = document.getElementById('menu-confirm-modal');
+const confirmGoBack = document.getElementById('confirm-go-back');
+const confirmStay = document.getElementById('confirm-stay');
 
 const questionEl = document.getElementById('question');
 const trueButton = document.getElementById('true-button');
@@ -138,6 +142,9 @@ function init() {
     trueButton.addEventListener('click', () => handleAnswer(true));
     falseButton.addEventListener('click', () => handleAnswer(false));
     nextButton.addEventListener('click', nextQuestion);
+    menuButton.addEventListener('click', showMenuConfirm);
+    confirmGoBack.addEventListener('click', goBackToMenu);
+    confirmStay.addEventListener('click', hideMenuConfirm);
 }
 
 function startGame(studyMode) {
@@ -318,6 +325,33 @@ function endGame() {
 init();
 
 // ============================================
+// ==================== MENU / BACK TO START ====================
+function showMenuConfirm() {
+    menuModal.classList.remove('hidden');
+}
+
+function hideMenuConfirm() {
+    menuModal.classList.add('hidden');
+}
+
+function goBackToMenu() {
+    menuModal.classList.add('hidden');
+
+    clearInterval(timerInterval);
+    clearInterval(studyTimerInterval);
+    clearTimeout(autoAdvanceTimeout);
+
+    gameScreen.classList.remove('active');
+    endScreen.classList.remove('active');
+    startScreen.classList.add('active');
+
+    feedbackEl.classList.add('hidden');
+    nextButton.style.display = 'none';
+    trueButton.style.display = 'block';
+    falseButton.style.display = 'block';
+}
+
+
 // Subtle Matrix Digital Rain Background
 // Very low density and opacity for atmosphere
 // ============================================
@@ -339,7 +373,7 @@ function initMatrixBackground() {
     const drops = Array(columns).fill(1);
 
     // Very subtle character set
-    const chars = '01アイウエオカキクケコサシスセソタチツテト';
+    const chars = '๐๑๒๓๔๕๖๗๘๙กขคฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ';
 
     function draw() {
         // Very faint trail

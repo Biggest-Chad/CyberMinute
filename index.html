@@ -42,6 +42,7 @@
                 <div class="score">
                     <span id="score">0</span>
                 </div>
+                <button id="menu-button" class="btn btn-menu">Menu</button>
             </div>
 
             <!-- Countdown -->
@@ -88,8 +89,19 @@
             </div>
         </div>
 
+    <!-- Menu Confirmation Modal -->
+    <div id="menu-confirm-modal" class="modal hidden">
+        <div class="modal-content">
+            <p class="modal-text">Go back to the main menu?</p>
+            <div class="modal-buttons">
+                <button id="confirm-go-back" class="btn btn-success">Go Back</button>
+                <button id="confirm-stay" class="btn btn-danger">Stay Here</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
