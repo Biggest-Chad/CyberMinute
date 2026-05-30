@@ -9,8 +9,8 @@
     --success: #4ade80;
     --danger: #f87171;
     --matrix-green: #4ade80;
-    --glass-bg: rgba(17, 24, 39, 0.85);
-    --glass-border: rgba(148, 163, 184, 0.15);
+    --glass-bg: rgba(17, 24, 39, 0.25);
+    --glass-border: rgba(148, 163, 184, 0.22);
 }
 :root {
 
@@ -47,7 +47,7 @@ body {
     max-width: 420px;
     background-color: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(18px);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
