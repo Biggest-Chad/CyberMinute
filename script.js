@@ -164,6 +164,7 @@ function startGame(studyMode) {
         timerEl.textContent = '0:00';
         timerEl.style.color = 'var(--accent)';
         startStudyTimer();
+        showQuestion();
     } else {
         timerEl.style.color = '';
         startCountdown();
@@ -233,6 +234,29 @@ function showQuestion() {
     falseButton.style.display = 'block';
     nextButton.style.display = 'none'; // Hidden by default in new flow
 }
+
+function handleAnswer(userAnswer) {
+    if (currentQuestionIndex >= currentQuestions.length) return;
+
+    const currentQ = currentQuestions[currentQuestionIndex];
+    const isCorrect = userAnswer === currentQ.answer;
+
+    if (isCorrect) {
+        score++;
+        scoreEl.textContent = score;
+    }
+
+    // Hide the answer buttons immediately after selection
+    trueButton.style.display = 'none';
+    falseButton.style.display = 'none';
+
+    if (isStudyMode) {
+        showStudyFeedback(isCorrect, currentQ.answer);
+    } else {
+        showTimedFeedback(isCorrect);
+    }
+}
+
 
 // ==================== NEW FEEDBACK SYSTEMS ====================
 function showTimedFeedback(isCorrect) {
@@ -319,10 +343,10 @@ function initMatrixBackground() {
 
     function draw() {
         // Very faint trail
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.18)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = '#4ade80'; // Soft matrix green
+        ctx.fillStyle = '#67e8f9'; // Soft matrix green
         ctx.font = `${fontSize}px monospace`;
 
         for (let i = 0; i < drops.length; i++) {
