@@ -134,13 +134,6 @@ h1 {
 }
 
 /* Game Screen */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
 .timer {
     font-size: 3rem;
     font-weight: 700;
@@ -262,13 +255,6 @@ h1 {
 }
 
 /* Phase 3 Polish - Better header for study timer */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
 .timer {
     font-size: 2.6rem;
     font-weight: 700;
@@ -346,22 +332,6 @@ h1 {
 }
 
 /* Menu button in game header */
-.btn-menu {
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    background: rgba(148, 163, 184, 0.15);
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    color: #cbd5e1;
-    margin-left: auto;
-}
-
-/* Modal styles */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
@@ -416,13 +386,6 @@ h1 {
 }
 
 /* Improved game header layout with menu button */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .game-header > .timer {
     flex: 1;
 }
@@ -432,22 +395,6 @@ h1 {
     text-align: center;
 }
 
-.game-header > .btn-menu {
-    flex: 1;
-    text-align: right;
-    margin-left: 0;
-}
-
-/* === UI TWEAKS - Compact Menu, SCORE label, pastel buttons, transparent modal === */
-
-.btn-menu {
-    font-size: 0.65rem !important;
-    padding: 3px 9px !important;
-    background: rgba(148, 163, 184, 0.18);
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    color: #cbd5e1;
-    border-radius: 9999px;
-    white-space: nowrap;
     line-height: 1;
 }
 
@@ -478,4 +425,33 @@ h1 {
     backdrop-filter: blur(18px);
     border: 1px solid rgba(148, 163, 184, 0.18);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* === Improved Game Header + Menu Button === */
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Compact, appropriately sized Menu button in top-right */
+.btn-menu {
+    font-size: 0.72rem;
+    padding: 5px 11px;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    color: #94a3b8;
+    border-radius: 9999px;
+    white-space: nowrap;
+    line-height: 1;
+    margin-top: 6px;           /* Aligns with top of the timer/score */
+    transition: all 0.2s ease;
+}
+
+.btn-menu:hover {
+    background: rgba(148, 163, 184, 0.22);
+    border-color: rgba(148, 163, 184, 0.4);
+    color: #cbd5e1;
 }
