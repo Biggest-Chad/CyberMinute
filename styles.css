@@ -328,3 +328,15 @@ h1 {
 .app-container { transition: box-shadow 0.3s ease; }
 .btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
 .btn:active { transform: translateY(1px); }
+
+/* v2 badge styling */
+.v2-badge {
+    font-size: 0.55em;
+    background-color: #22d3ee;
+    color: #0a0f1c;
+    padding: 2px 7px;
+    border-radius: 4px;
+    vertical-align: middle;
+    font-weight: 700;
+    margin-left: 6px;
+}
