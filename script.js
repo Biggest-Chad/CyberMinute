@@ -1,6 +1,7 @@
 // ============================================
 // CyberMinute2 - Refactored Game Logic
 // All original questions and rules preserved
+// Enhanced with new Timed auto-advance + Study mode flows
 // ============================================
 
 const questions = [
@@ -92,8 +93,11 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timer = 60;
 let timerInterval = null;
+let studyTimerInterval = null;
+let studyStartTime = null;
 let isStudyMode = false;
 let highScore = localStorage.getItem('cyberMinuteHighScore') || 0;
+let autoAdvanceTimeout = null;
 
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
@@ -143,7 +147,11 @@ function startGame(studyMode) {
     score = 0;
     timer = 60;
 
-    // Hide all screens
+    // Clear any previous timers
+    clearInterval(timerInterval);
+    clearInterval(studyTimerInterval);
+    clearTimeout(autoAdvanceTimeout);
+
     startScreen.classList.remove('active');
     endScreen.classList.remove('active');
     gameScreen.classList.add('active');
@@ -151,13 +159,30 @@ function startGame(studyMode) {
     scoreEl.textContent = score;
     feedbackEl.classList.add('hidden');
 
-    if (!isStudyMode) {
-        startCountdown();
+    // Reset study timer display if needed
+    if (isStudyMode) {
+        timerEl.textContent = '0:00';
+        timerEl.style.color = 'var(--accent)';
+        startStudyTimer();
     } else {
-        showQuestion();
+        timerEl.style.color = '';
+        startCountdown();
     }
 }
 
+// ==================== STUDY MODE TIMER ====================
+function startStudyTimer() {
+    studyStartTime = Date.now();
+
+    studyTimerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+// ==================== TIMED MODE ====================
 function startCountdown() {
     countdownEl.classList.remove('hidden');
     let count = 3;
@@ -192,6 +217,7 @@ function startTimer() {
     }, 1000);
 }
 
+// ==================== QUESTION DISPLAY ====================
 function showQuestion() {
     if (currentQuestionIndex >= currentQuestions.length) {
         endGame();
@@ -205,40 +231,52 @@ function showQuestion() {
     feedbackEl.classList.add('hidden');
     trueButton.style.display = 'block';
     falseButton.style.display = 'block';
+    nextButton.style.display = 'none'; // Hidden by default in new flow
 }
 
-function handleAnswer(userAnswer) {
-    const currentQ = currentQuestions[currentQuestionIndex];
-    const isCorrect = userAnswer === currentQ.answer;
-
-    // Hide answer buttons
-    trueButton.style.display = 'none';
-    falseButton.style.display = 'none';
-
-    // Show feedback
-    feedbackText.textContent = isCorrect ? 'Correct!' : 'Incorrect';
+// ==================== NEW FEEDBACK SYSTEMS ====================
+function showTimedFeedback(isCorrect) {
+    feedbackText.textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
     feedbackText.className = isCorrect ? 'correct' : 'incorrect';
     feedbackEl.classList.remove('hidden');
 
-    // Update score
-    if (isCorrect) {
-        score++;
-    } else if (!isStudyMode) {
-        score = Math.max(0, score - 1);
-    }
-    scoreEl.textContent = score;
+    // Auto advance after brief delay (fast flow)
+    autoAdvanceTimeout = setTimeout(() => {
+        feedbackEl.classList.add('hidden');
+        currentQuestionIndex++;
+        showQuestion();
+    }, 750);
+}
+
+function showStudyFeedback(isCorrect, correctAnswer) {
+    const correctText = correctAnswer ? 'True' : 'False';
+    feedbackText.innerHTML = `
+        <div style="margin-bottom: 8px;">${isCorrect ? '✓ Correct' : '✗ Incorrect'}</div>
+        <div style="font-size: 1.1rem; opacity: 0.9;">Correct answer: <strong>${correctText}</strong></div>
+    `;
+    feedbackText.className = isCorrect ? 'correct' : 'incorrect';
+    feedbackEl.classList.remove('hidden');
+
+    // Show the Next button for manual advance in Study mode
+    nextButton.style.display = 'inline-block';
 }
 
 function nextQuestion() {
-    currentQuestionIndex++;
+    clearTimeout(autoAdvanceTimeout);
     feedbackEl.classList.add('hidden');
+    nextButton.style.display = 'none';
     trueButton.style.display = 'block';
     falseButton.style.display = 'block';
+    currentQuestionIndex++;
     showQuestion();
 }
 
+// ==================== END GAME ====================
 function endGame() {
     clearInterval(timerInterval);
+    clearInterval(studyTimerInterval);
+    clearTimeout(autoAdvanceTimeout);
+
     gameScreen.classList.remove('active');
     endScreen.classList.add('active');
 
@@ -254,3 +292,54 @@ function endGame() {
 
 // Initialize the game
 init();
+
+// ============================================
+// Subtle Matrix Digital Rain Background
+// Very low density and opacity for atmosphere
+// ============================================
+function initMatrixBackground() {
+    const canvas = document.getElementById('matrix-bg');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    // Very subtle character set
+    const chars = '01アイウエオカキクケコサシスセソタチツテト';
+
+    function draw() {
+        // Very faint trail
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#4ade80'; // Soft matrix green
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            // Slow fall + random reset
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    // Low frame rate for performance
+    setInterval(draw, 120);
+}
+
+// Start the background
+initMatrixBackground();
