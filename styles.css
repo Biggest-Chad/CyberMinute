@@ -133,33 +133,6 @@ h1 {
     margin-top: 16px;
 }
 
-/* Game Screen */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.timer {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.timer-label {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    display: block;
-    margin-top: -8px;
-}
-
-.score {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--accent);
-}
-
 /* Question */
 .question-container {
     flex: 1;
@@ -173,6 +146,21 @@ h1 {
     font-size: 1.35rem;
     line-height: 1.4;
     text-align: center;
+}
+
+/* Category label shown only in Study mode - intentionally subtle */
+.question-category {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    opacity: 0.75;
+    text-align: center;
+}
+
+.question-category.hidden {
+    display: none;
 }
 
 /* Answer Section */
@@ -259,36 +247,6 @@ h1 {
 /* Hidden */
 .hidden {
     display: none !important;
-}
-
-/* Phase 3 Polish - Better header for study timer */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.timer {
-    font-size: 2.6rem;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.timer-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    display: block;
-    margin-top: -4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.score {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-align: right;
 }
 
 /* Phase 3+ Polish - Improved buttons and feedback */
