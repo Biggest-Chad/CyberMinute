@@ -439,6 +439,8 @@ async function submitScoreToLeaderboard(playerName) {
         session_token: sessionToken
     };
 
+    console.log("Submitting score with payload:", payload);
+
     try {
         const response = await fetch("https://sbqjdgrchsbvfwgodhmt.supabase.co/functions/v1/submit-score", {
             method: "POST",
@@ -446,7 +448,16 @@ async function submitScoreToLeaderboard(playerName) {
             body: JSON.stringify(payload)
         });
 
-        const result = await response.json();
+        let result;
+        try {
+            result = await response.json();
+        } catch (jsonErr) {
+            console.error("Failed to parse JSON response:", jsonErr);
+            alert(`Submission failed (status ${response.status}). The server did not return valid JSON.`);
+            return;
+        }
+
+        console.log("Submission response:", response.status, result);
 
         if (response.ok) {
             alert("Score submitted successfully! Thank you.");
@@ -455,11 +466,11 @@ async function submitScoreToLeaderboard(playerName) {
             quizStartTime = null;
             sessionStorage.removeItem("cyberminute_session_token");
         } else {
-            alert("Error: " + (result.error || "Failed to submit score"));
+            alert("Error: " + (result.error || `Failed with status ${response.status}`));
         }
     } catch (err) {
-        console.error(err);
-        alert("Network error. Could not submit score.");
+        console.error("Fetch error:", err);
+        alert("Network error: " + (err.message || "Could not reach the server. This is often a CORS or network issue."));
     }
 }
 
