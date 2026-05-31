@@ -123,6 +123,7 @@ let timerInterval = null;
 let studyTimerInterval = null;
 let studyStartTime = null;
 let isStudyMode = false;
+let currentStudyCategory = null;  // For displaying selected category on end screen
 let highScore = localStorage.getItem('cyberMinuteHighScore') || 0;
 let autoAdvanceTimeout = null;
 
@@ -138,7 +139,7 @@ const endScreen = document.getElementById('end-screen');
 
 const startButton = document.getElementById('start-button');
 const studyButton = document.getElementById('study-button');
-const playAgainButton = document.getElementById('play-again');
+const mainMenuBtn = document.getElementById('main-menu-btn');
 const endStudyButton = document.getElementById('end-study-button');
 const menuButton = document.getElementById('menu-button');
 const menuModal = document.getElementById('menu-confirm-modal');
@@ -180,6 +181,8 @@ const closeStudyCategoryBtn = document.getElementById('close-study-category');
 const studyAllBtn = document.getElementById('study-all-btn');
 const categoryGrid = document.getElementById('category-grid');
 
+const endCategoryEl = document.getElementById('end-category');
+
 // Initialize
 function init() {
     highScoreDisplay.textContent = highScore;
@@ -187,7 +190,7 @@ function init() {
 
     startButton.addEventListener('click', () => startGame(false));
     studyButton.addEventListener('click', showStudyCategoryModal);
-    playAgainButton.addEventListener('click', () => startGame(false));
+    mainMenuBtn.addEventListener('click', goBackToMenu);
     endStudyButton.addEventListener('click', () => startGame(true));
 
     trueButton.addEventListener('click', () => handleAnswer(true));
@@ -230,6 +233,11 @@ function init() {
 
 function startGame(studyMode) {
     isStudyMode = studyMode;
+
+    // Reset category display state when starting a new game
+    if (!studyMode) {
+        currentStudyCategory = null;
+    }
 
     // Support category filtering for Study mode (from STUDY_MODE_CATEGORIES_PLAN.md)
     if (isStudyMode && window._studyCategoryFilter) {
@@ -289,6 +297,15 @@ function startGame(studyMode) {
  */
 function startStudyMode(category = null) {
     window._studyCategoryFilter = category;
+
+    // Set nice display name for end screen
+    if (category) {
+        const cat = CATEGORIES.find(c => c.id === category);
+        currentStudyCategory = cat ? cat.label : category;
+    } else {
+        currentStudyCategory = "All Categories";
+    }
+
     startGame(true);
 }
 
@@ -442,6 +459,12 @@ function endGame() {
         // Study Mode end screen
         if (endTitle) endTitle.textContent = "All Questions Answered!";
 
+        // Show selected category from picker
+        if (endCategoryEl) {
+            endCategoryEl.textContent = currentStudyCategory ? `Category: ${currentStudyCategory}` : "";
+            endCategoryEl.classList.remove("hidden");
+        }
+
         // Show correct / total answered
         const totalAnswered = questionsAnswered || currentQuestions.length;
         if (finalScoreContainer) {
@@ -466,6 +489,9 @@ function endGame() {
 
     } else {
         // Timed / Challenge Mode
+        if (endCategoryEl) {
+            endCategoryEl.classList.add("hidden");
+        }
         if (endTitle) endTitle.textContent = "Time's Up!";
 
         // Restore normal score display
@@ -518,6 +544,9 @@ function hideMenuConfirm() {
 
 function goBackToMenu() {
     menuModal.classList.add('hidden');
+
+    // Reset study state
+    currentStudyCategory = null;
 
     clearInterval(timerInterval);
     clearInterval(studyTimerInterval);
