@@ -470,9 +470,9 @@ async function submitScoreToLeaderboard(playerName) {
             // Success - hide the submit section and show confirmation
             if (submitScoreSection) {
                 submitScoreSection.innerHTML = `
-                    <div class="submit-success">
-                        ✅ Score submitted successfully!<br>
-                        Thank you — your score is now on the leaderboard.
+                    <div class="submit-success-btn" onclick="showLeaderboard();">
+                        <div class="success-top">✅ Score submitted 📋</div>
+                        <div class="success-view">View Leaderboard</div>
                     </div>
                 `;
             }
