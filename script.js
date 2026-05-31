@@ -551,7 +551,7 @@ function initMatrixBackground() {
 initMatrixBackground();
 // ==================== LEADERBOARD ====================
 const SUPABASE_URL = "https://sbqjdgrchsbvfwgodhmt.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE"; // <-- Replace with your actual anon key
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNicWpkZ3JjaHNidmZ3Z29kaG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDE4OTIsImV4cCI6MjA5NTcxNzg5Mn0.TD72cOY3QhxtLhOY6BFdhRmiz4WNpSacn3Nlc3z2_2c"; // Real anon key - safe for frontend
 
 let currentLeaderboardTab = "all";
 
