@@ -117,6 +117,7 @@ function getStudyQuestions(category = null) {
 // Game State
 let currentQuestionIndex = 0;
 let score = 0;
+let questionsAnswered = 0;
 let timer = 60;
 let timerInterval = null;
 let studyTimerInterval = null;
@@ -240,6 +241,7 @@ function startGame(studyMode) {
 
     currentQuestionIndex = 0;
     score = 0;
+    questionsAnswered = 0;
     timer = 60;
 
     // Clear any previous timers
@@ -250,6 +252,10 @@ function startGame(studyMode) {
     startScreen.classList.remove('active');
     endScreen.classList.remove('active');
     gameScreen.classList.add('active');
+
+    // Ensure high score box is visible (in case it was hidden from previous Study session)
+    const endHighScoreBox = document.querySelector('#end-screen .high-score-box');
+    if (endHighScoreBox) endHighScoreBox.style.display = '';
 
     scoreEl.textContent = score;
     feedbackEl.classList.add('hidden');
@@ -364,6 +370,7 @@ function handleAnswer(userAnswer) {
     const currentQ = currentQuestions[currentQuestionIndex];
     const isCorrect = userAnswer === currentQ.answer;
 
+    questionsAnswered++;
     if (isCorrect) {
         score++;
         scoreEl.textContent = score;
@@ -428,13 +435,61 @@ function endGame() {
     gameScreen.classList.remove('active');
     endScreen.classList.add('active');
 
-    finalScoreEl.textContent = score;
+    const endTitle = document.getElementById('end-title');
+    const finalScoreContainer = document.querySelector('.final-score');
 
-    if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('cyberMinuteHighScore', highScore);
-        endHighScoreDisplay.textContent = highScore;
-        highScoreDisplay.textContent = highScore;
+    if (isStudyMode) {
+        // Study Mode end screen
+        if (endTitle) endTitle.textContent = "All Questions Answered!";
+
+        // Show correct / total answered
+        const totalAnswered = questionsAnswered || currentQuestions.length;
+        if (finalScoreContainer) {
+            finalScoreContainer.innerHTML = `
+                <span>You got</span>
+                <span id="final-score" class="big-number">${score}</span>
+                <span>out of</span>
+                <span class="big-number">${totalAnswered}</span>
+                <span>correct</span>
+            `;
+        }
+
+        // Hide high score in study mode (it's only for Challenge mode)
+        const endHighScoreBox = document.querySelector('#end-screen .high-score-box');
+        if (endHighScoreBox) {
+            endHighScoreBox.style.display = 'none';
+        }
+
+        // Also hide the start screen high score during study? (optional, but consistent)
+        const startHighScoreBox = document.querySelector('.high-score-box');
+        // We won't hide the main one permanently, just don't update it in study mode
+
+    } else {
+        // Timed / Challenge Mode
+        if (endTitle) endTitle.textContent = "Time's Up!";
+
+        // Restore normal score display
+        if (finalScoreContainer) {
+            finalScoreContainer.innerHTML = `
+                <span>You answered</span>
+                <span id="final-score" class="big-number">${score}</span>
+                <span>questions correctly</span>
+            `;
+        }
+
+        // Show high score box again
+        const endHighScoreBox = document.querySelector('#end-screen .high-score-box');
+        if (endHighScoreBox) {
+            endHighScoreBox.style.display = '';
+        }
+
+        // Update high score only in challenge mode
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('cyberMinuteHighScore', highScore);
+            if (endHighScoreDisplay) endHighScoreDisplay.textContent = highScore;
+            if (highScoreDisplay) highScoreDisplay.textContent = highScore;
+        }
     }
 
     // Show submit score section only for legitimate Timed completions
