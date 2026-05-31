@@ -53,6 +53,7 @@
             </div>
 
             <div class="question-container">
+                <div id="question-category" class="question-category hidden"></div>
                 <div id="question" class="question"></div>
             </div>
 
@@ -133,6 +134,27 @@
         </div>
     </div>
 
+    </div>
+
+
+    <!-- Study Category Picker Modal -->
+    <div id="study-category-modal" class="modal hidden">
+        <div class="modal-content study-category-modal">
+            <div class="leaderboard-header">
+                <h2>Study Mode</h2>
+                <button id="close-study-category" class="btn-close">×</button>
+            </div>
+            
+            <p class="modal-subtitle">Focus on a specific topic or practice everything.</p>
+            
+            <button id="study-all-btn" class="btn btn-primary study-all-btn">
+                All Categories
+            </button>
+            
+            <div class="category-grid" id="category-grid">
+                <!-- Populated dynamically by JS -->
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

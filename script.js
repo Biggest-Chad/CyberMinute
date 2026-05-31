@@ -6,89 +6,115 @@
 
 const questions = [
     // Email Phishing
-    { question: "Phishing emails often contain spelling and grammar mistakes.", answer: true },
-    { question: "It's safe to click on links in emails from unknown senders if the email looks professional.", answer: false },
-    { question: "Phishing emails can pretend to come from a trusted company.", answer: true },
-    { question: "You should always verify the sender's email address before replying to an email.", answer: true },
-    { question: "Phishing emails never include attachments.", answer: false },
-    { question: "Hovering over a link in an email can reveal if it's suspicious.", answer: true },
-    { question: "Phishing only happens through email, not text messages.", answer: false },
-    { question: "All emails from your bank are safe to trust without checking.", answer: false },
-    { question: "Phishing emails often try to create urgency to make you act without thinking.", answer: true },
-    { question: "The sender name displayed in your inbox is always the real sender.", answer: false },
-    { question: "Hackers can create fake websites that look almost identical to legitimate ones.", answer: true },
-    { question: "Verifying suspicious requests by calling the company using a publicly known phone number is a good practice.", answer: true },
-    { question: "Phishing attempts can include fake security alerts from your IT department.", answer: true },
-    { question: "It's safe to click links in emails if they match the company's branding perfectly.", answer: false },
-    { question: "Business email compromise is a sophisticated form of phishing attack.", answer: true },
-    { question: "You should never enter login credentials on a website reached via an email link.", answer: true },
+    { question: "Phishing emails often contain spelling and grammar mistakes.", answer: true, category: "Email Phishing" },
+    { question: "It's safe to click on links in emails from unknown senders if the email looks professional.", answer: false, category: "Email Phishing" },
+    { question: "Phishing emails can pretend to come from a trusted company.", answer: true, category: "Email Phishing" },
+    { question: "You should always verify the sender's email address before replying to an email.", answer: true, category: "Email Phishing" },
+    { question: "Phishing emails never include attachments.", answer: false, category: "Email Phishing" },
+    { question: "Hovering over a link in an email can reveal if it's suspicious.", answer: true, category: "Email Phishing" },
+    { question: "Phishing only happens through email, not text messages.", answer: false, category: "Email Phishing" },
+    { question: "All emails from your bank are safe to trust without checking.", answer: false, category: "Email Phishing" },
+    { question: "Phishing emails often try to create urgency to make you act without thinking.", answer: true, category: "Email Phishing" },
+    { question: "The sender name displayed in your inbox is always the real sender.", answer: false, category: "Email Phishing" },
+    { question: "Hackers can create fake websites that look almost identical to legitimate ones.", answer: true, category: "Email Phishing" },
+    { question: "Verifying suspicious requests by calling the company using a publicly known phone number is a good practice.", answer: true, category: "Email Phishing" },
+    { question: "Phishing attempts can include fake security alerts from your IT department.", answer: true, category: "Email Phishing" },
+    { question: "It's safe to click links in emails if they match the company's branding perfectly.", answer: false, category: "Email Phishing" },
+    { question: "Business email compromise is a sophisticated form of phishing attack.", answer: true, category: "Email Phishing" },
+    { question: "You should never enter login credentials on a website reached via an email link.", answer: true, category: "Email Phishing" },
 
     // Password Security
-    { question: "Using the same password for multiple accounts increases the risk of a security breach.", answer: true },
-    { question: "It's okay to use the same password for all your work accounts if it's strong.", answer: false },
-    { question: "A strong password should include numbers, letters, and special characters.", answer: true },
-    { question: "Writing down passwords on paper is safer than reusing them.", answer: true },
-    { question: "Password managers can help you avoid reusing passwords.", answer: true },
-    { question: "Short passwords are just as secure as long ones if they're unique.", answer: false },
-    { question: "You should change your passwords regularly to stay secure.", answer: true },
-    { question: "Using the same password on multiple websites puts all those accounts at risk if one is breached.", answer: true },
-    { question: "Password managers help generate and store strong, unique passwords for each account.", answer: true },
-    { question: "It's acceptable to reuse passwords if you add a number at the end for each site.", answer: false },
-    { question: "A passphrase made of several random words is often more secure than a short complex password.", answer: true },
-    { question: "You should use the same password for low-risk sites like news websites.", answer: false },
-    { question: "Weak passwords can be guessed or cracked very quickly by hackers.", answer: true },
-    { question: "Multi-factor authentication can help protect your accounts even if your password is reused and stolen.", answer: true },
+    { question: "Using the same password for multiple accounts increases the risk of a security breach.", answer: true, category: "Password Security" },
+    { question: "It's okay to use the same password for all your work accounts if it's strong.", answer: false, category: "Password Security" },
+    { question: "A strong password should include numbers, letters, and special characters.", answer: true, category: "Password Security" },
+    { question: "Writing down passwords on paper is safer than reusing them.", answer: true, category: "Password Security" },
+    { question: "Password managers can help you avoid reusing passwords.", answer: true, category: "Password Security" },
+    { question: "Short passwords are just as secure as long ones if they're unique.", answer: false, category: "Password Security" },
+    { question: "You should change your passwords regularly to stay secure.", answer: true, category: "Password Security" },
+    { question: "Using the same password on multiple websites puts all those accounts at risk if one is breached.", answer: true, category: "Password Security" },
+    { question: "Password managers help generate and store strong, unique passwords for each account.", answer: true, category: "Password Security" },
+    { question: "It's acceptable to reuse passwords if you add a number at the end for each site.", answer: false, category: "Password Security" },
+    { question: "A passphrase made of several random words is often more secure than a short complex password.", answer: true, category: "Password Security" },
+    { question: "You should use the same password for low-risk sites like news websites.", answer: false, category: "Password Security" },
+    { question: "Weak passwords can be guessed or cracked very quickly by hackers.", answer: true, category: "Password Security" },
+    { question: "Multi-factor authentication can help protect your accounts even if your password is reused and stolen.", answer: true, category: "Password Security" },
 
     // Email Scams
-    { question: "Emails asking for urgent action or threatening consequences are likely scams.", answer: true },
-    { question: "If an email comes from a known contact, it's always safe to open attachments.", answer: false },
-    { question: "Scammers can use fake email addresses that look real.", answer: true },
-    { question: "Winning a prize in an email you didn't enter is usually a scam.", answer: true },
-    { question: "Emails asking for your password are legitimate if they're from IT.", answer: false },
-    { question: "You should report suspicious emails to your IT department.", answer: true },
-    { question: "Email scams only target businesses, not individuals.", answer: false },
-    { question: "Emails promising large sums of money for helping transfer funds are usually scams.", answer: true },
-    { question: "Fake technical support emails claiming your computer has a virus are common scams.", answer: true },
-    { question: "You should always double-check email addresses carefully, looking for subtle misspellings.", answer: true },
-    { question: "Scammers may impersonate colleagues to request wire transfers or gift cards.", answer: true },
-    { question: "If an email asks you to pay an unexpected invoice urgently, it could be fraudulent.", answer: true },
-    { question: "Reporting scam emails helps protect others in your organization.", answer: true },
-    { question: "Email scams can lead to financial loss or data theft for both companies and individuals.", answer: true },
+    { question: "Emails asking for urgent action or threatening consequences are likely scams.", answer: true, category: "Email Scams" },
+    { question: "If an email comes from a known contact, it's always safe to open attachments.", answer: false, category: "Email Scams" },
+    { question: "Scammers can use fake email addresses that look real.", answer: true, category: "Email Scams" },
+    { question: "Winning a prize in an email you didn't enter is usually a scam.", answer: true, category: "Email Scams" },
+    { question: "Emails asking for your password are legitimate if they're from IT.", answer: false, category: "Email Scams" },
+    { question: "You should report suspicious emails to your IT department.", answer: true, category: "Email Scams" },
+    { question: "Email scams only target businesses, not individuals.", answer: false, category: "Email Scams" },
+    { question: "Emails promising large sums of money for helping transfer funds are usually scams.", answer: true, category: "Email Scams" },
+    { question: "Fake technical support emails claiming your computer has a virus are common scams.", answer: true, category: "Email Scams" },
+    { question: "You should always double-check email addresses carefully, looking for subtle misspellings.", answer: true, category: "Email Scams" },
+    { question: "Scammers may impersonate colleagues to request wire transfers or gift cards.", answer: true, category: "Email Scams" },
+    { question: "If an email asks you to pay an unexpected invoice urgently, it could be fraudulent.", answer: true, category: "Email Scams" },
+    { question: "Reporting scam emails helps protect others in your organization.", answer: true, category: "Email Scams" },
+    { question: "Email scams can lead to financial loss or data theft for both companies and individuals.", answer: true, category: "Email Scams" },
 
     // Virus Prevention
-    { question: "Installing antivirus software can help protect your computer from viruses.", answer: true },
-    { question: "Downloading software from unofficial sources is safe if it's free.", answer: false },
-    { question: "Updating your software regularly can prevent virus infections.", answer: true },
-    { question: "Opening email attachments from unknown sources can infect your device.", answer: true },
-    { question: "Viruses can only spread through email, not USB drives.", answer: false },
-    { question: "Antivirus software guarantees 100% protection from all viruses.", answer: false },
-    { question: "Clicking 'unsubscribe' on spam emails can stop viruses.", answer: false },
-    { question: "Malware can be disguised as legitimate software updates or downloads.", answer: true },
-    { question: "Visiting compromised websites can (rarely) automatically download malware to your computer.", answer: true },
-    { question: "Keeping your operating system and applications updated is important for security.", answer: true },
-    { question: "USB drives from unknown sources should never be plugged into work computers without scanning.", answer: true },
-    { question: "Antivirus programs should be kept running and updated at all times.", answer: true },
-    { question: "Opening PDFs or Word documents from unknown sources is completely safe.", answer: false },
-    { question: "Using a firewall provides an additional layer of protection against viruses.", answer: true },
+    { question: "Installing antivirus software can help protect your computer from viruses.", answer: true, category: "Virus Prevention" },
+    { question: "Downloading software from unofficial sources is safe if it's free.", answer: false, category: "Virus Prevention" },
+    { question: "Updating your software regularly can prevent virus infections.", answer: true, category: "Virus Prevention" },
+    { question: "Opening email attachments from unknown sources can infect your device.", answer: true, category: "Virus Prevention" },
+    { question: "Viruses can only spread through email, not USB drives.", answer: false, category: "Virus Prevention" },
+    { question: "Antivirus software guarantees 100% protection from all viruses.", answer: false, category: "Virus Prevention" },
+    { question: "Clicking 'unsubscribe' on spam emails can stop viruses.", answer: false, category: "Virus Prevention" },
+    { question: "Malware can be disguised as legitimate software updates or downloads.", answer: true, category: "Virus Prevention" },
+    { question: "Visiting compromised websites can (rarely) automatically download malware to your computer.", answer: true, category: "Virus Prevention" },
+    { question: "Keeping your operating system and applications updated is important for security.", answer: true, category: "Virus Prevention" },
+    { question: "USB drives from unknown sources should never be plugged into work computers without scanning.", answer: true, category: "Virus Prevention" },
+    { question: "Antivirus programs should be kept running and updated at all times.", answer: true, category: "Virus Prevention" },
+    { question: "Opening PDFs or Word documents from unknown sources is completely safe.", answer: false, category: "Virus Prevention" },
+    { question: "Using a firewall provides an additional layer of protection against viruses.", answer: true, category: "Virus Prevention" },
 
     // Ransomware
-    { question: "If you suspect a ransomware attack, you should disconnect your device from the network.", answer: true },
-    { question: "Paying the ransom is the best way to get your files back after a ransomware attack.", answer: false },
-    { question: "Ransomware can lock your files and demand payment to unlock them.", answer: true },
-    { question: "You should report a ransomware attack to your IT team immediately.", answer: true },
-    { question: "Backups can help you recover from a ransomware attack without paying.", answer: true },
-    { question: "Ransomware only affects personal computers, not company devices.", answer: false },
-    { question: "Restarting your computer will remove ransomware.", answer: false },
-    { question: "In a suspected ransomware incident, you should avoid using the infected device for any work.", answer: true },
-    { question: "Ransomware attacks often spread to other computers on the same network.", answer: true },
-    { question: "You should never pay the ransom demanded by attackers.", answer: true },
-    { question: "Having recent, clean backups stored separately can help recover from ransomware.", answer: true },
-    { question: "Ransomware can also steal your data before encrypting your files.", answer: true },
-    { question: "Immediately notifying your supervisor or IT helpdesk is crucial during a ransomware attack.", answer: true },
+    { question: "If you suspect a ransomware attack, you should disconnect your device from the network.", answer: true, category: "Ransomware" },
+    { question: "Paying the ransom is the best way to get your files back after a ransomware attack.", answer: false, category: "Ransomware" },
+    { question: "Ransomware can lock your files and demand payment to unlock them.", answer: true, category: "Ransomware" },
+    { question: "You should report a ransomware attack to your IT team immediately.", answer: true, category: "Ransomware" },
+    { question: "Backups can help you recover from a ransomware attack without paying.", answer: true, category: "Ransomware" },
+    { question: "Ransomware only affects personal computers, not company devices.", answer: false, category: "Ransomware" },
+    { question: "Restarting your computer will remove ransomware.", answer: false, category: "Ransomware" },
+    { question: "In a suspected ransomware incident, you should avoid using the infected device for any work.", answer: true, category: "Ransomware" },
+    { question: "Ransomware attacks often spread to other computers on the same network.", answer: true, category: "Ransomware" },
+    { question: "You should never pay the ransom demanded by attackers.", answer: true, category: "Ransomware" },
+    { question: "Having recent, clean backups stored separately can help recover from ransomware.", answer: true, category: "Ransomware" },
+    { question: "Ransomware can also steal your data before encrypting your files.", answer: true, category: "Ransomware" },
+    { question: "Immediately notifying your supervisor or IT helpdesk is crucial during a ransomware attack.", answer: true, category: "Ransomware" },
 ];
 
+// ============================================
+// Study Mode Category System (from STUDY_MODE_CATEGORIES_PLAN.md)
+// Single source of truth for filtering — future-proof for Supabase
+// ============================================
+
+const CATEGORIES = [
+    { id: "Email Phishing",     label: "Phishing" },
+    { id: "Password Security",  label: "Passwords" },
+    { id: "Email Scams",        label: "Email Scams" },
+    { id: "Virus Prevention",   label: "Viruses" },
+    { id: "Ransomware",         label: "Ransomware" }
+];
+
+/**
+ * Returns questions for Study mode.
+ * category = null → all questions
+ * This is the ONLY place that should know how to select study questions.
+ * Future: When questions live in Supabase, replace the body of this function.
+ */
+function getStudyQuestions(category = null) {
+    if (!category) {
+        return [...questions];
+    }
+    return questions.filter(q => q.category === category);
+}
+
+
 // Game State
-let currentQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
 let timer = 60;
@@ -119,6 +145,7 @@ const confirmGoBack = document.getElementById('confirm-go-back');
 const confirmStay = document.getElementById('confirm-stay');
 
 const questionEl = document.getElementById('question');
+const questionCategoryEl = document.getElementById('question-category');
 const trueButton = document.getElementById('true-button');
 const falseButton = document.getElementById('false-button');
 const feedbackEl = document.getElementById('feedback');
@@ -146,13 +173,19 @@ const tabAll = document.getElementById('tab-all');
 const tabToday = document.getElementById('tab-today');
 const leaderboardContent = document.getElementById('leaderboard-content');
 
+// Study Category Modal elements (Phase B)
+const studyCategoryModal = document.getElementById('study-category-modal');
+const closeStudyCategoryBtn = document.getElementById('close-study-category');
+const studyAllBtn = document.getElementById('study-all-btn');
+const categoryGrid = document.getElementById('category-grid');
+
 // Initialize
 function init() {
     highScoreDisplay.textContent = highScore;
     endHighScoreDisplay.textContent = highScore;
 
     startButton.addEventListener('click', () => startGame(false));
-    studyButton.addEventListener('click', () => startGame(true));
+    studyButton.addEventListener('click', showStudyCategoryModal);
     playAgainButton.addEventListener('click', () => startGame(false));
     endStudyButton.addEventListener('click', () => startGame(true));
 
@@ -196,7 +229,15 @@ function init() {
 
 function startGame(studyMode) {
     isStudyMode = studyMode;
-    currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+
+    // Support category filtering for Study mode (from STUDY_MODE_CATEGORIES_PLAN.md)
+    if (isStudyMode && window._studyCategoryFilter) {
+        currentQuestions = getStudyQuestions(window._studyCategoryFilter).sort(() => Math.random() - 0.5);
+        window._studyCategoryFilter = null; // one-time use
+    } else {
+        currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+    }
+
     currentQuestionIndex = 0;
     score = 0;
     timer = 60;
@@ -212,6 +253,7 @@ function startGame(studyMode) {
 
     scoreEl.textContent = score;
     feedbackEl.classList.add('hidden');
+    if (questionCategoryEl) questionCategoryEl.classList.add('hidden');
 
     // Reset leaderboard submission state
     sessionToken = null;
@@ -232,6 +274,16 @@ function startGame(studyMode) {
         timerEl.style.color = '';
         startCountdown();
     }
+}
+
+/**
+ * Entry point for Study mode with optional category.
+ * Sets the filter then calls startGame(true).
+ * Used by the category picker modal (Phase B).
+ */
+function startStudyMode(category = null) {
+    window._studyCategoryFilter = category;
+    startGame(true);
 }
 
 // ==================== STUDY MODE TIMER ====================
@@ -290,6 +342,14 @@ function showQuestion() {
 
     const currentQ = currentQuestions[currentQuestionIndex];
     questionEl.textContent = currentQ.question;
+
+    // Show category subnote only in Study mode (subtle / non-distracting)
+    if (isStudyMode && questionCategoryEl && currentQ.category) {
+        questionCategoryEl.textContent = currentQ.category;
+        questionCategoryEl.classList.remove('hidden');
+    } else if (questionCategoryEl) {
+        questionCategoryEl.classList.add('hidden');
+    }
 
     // Reset UI
     feedbackEl.classList.add('hidden');
@@ -364,6 +424,7 @@ function endGame() {
     clearInterval(studyTimerInterval);
     clearTimeout(autoAdvanceTimeout);
 
+    if (questionCategoryEl) questionCategoryEl.classList.add('hidden');
     gameScreen.classList.remove('active');
     endScreen.classList.add('active');
 
@@ -682,3 +743,66 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// ============================================
+// Study Category Picker Modal (Phase B)
+// ============================================
+
+function showStudyCategoryModal() {
+    if (!studyCategoryModal) return;
+
+    studyCategoryModal.classList.remove('hidden');
+
+    // Populate category buttons if not already done
+    if (categoryGrid && categoryGrid.children.length === 0) {
+        populateCategoryGrid();
+    }
+
+    // Wire All Categories button
+    if (studyAllBtn) {
+        studyAllBtn.onclick = () => {
+            hideStudyCategoryModal();
+            startStudyMode(null); // all categories
+        };
+    }
+
+    // Close button
+    if (closeStudyCategoryBtn) {
+        closeStudyCategoryBtn.onclick = hideStudyCategoryModal;
+    }
+
+    // Close on outside click
+    studyCategoryModal.onclick = (e) => {
+        if (e.target === studyCategoryModal) {
+            hideStudyCategoryModal();
+        }
+    };
+}
+
+function hideStudyCategoryModal() {
+    if (studyCategoryModal) {
+        studyCategoryModal.classList.add('hidden');
+    }
+}
+
+function populateCategoryGrid() {
+    if (!categoryGrid || !CATEGORIES) return;
+
+    categoryGrid.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'category-btn';
+        btn.textContent = cat.label;
+
+        btn.onclick = () => {
+            hideStudyCategoryModal();
+            startStudyMode(cat.id);
+        };
+
+        categoryGrid.appendChild(btn);
+    });
+}
+
+// Optional: Also allow end-screen Study button to open picker (Phase C decision)
+// For now it still starts full study mode directly (as before)
