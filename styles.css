@@ -669,86 +669,94 @@ h1 {
     line-height: 1.2;
 }
 
+
 /* ========================================
-   CLEAN HEADER REDESIGN - Top 3 elements only
-   Timer (left) | Score (center) | Menu (right)
+   GRID-BASED HEADER REDESIGN (different method)
+   Strict 3-column: Timer | Score | Menu
    ======================================== */
 
 .game-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-bottom: 12px !important;
 }
 
-/* Timer - top left, label ABOVE the number */
+/* Timer - strictly left */
 .game-header > .timer {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 2.6rem;
-    font-weight: 700;
-    color: #67e8f9; /* cyan accent */
-    line-height: 1;
+    grid-column: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    font-size: 2.4rem !important;
+    font-weight: 700 !important;
+    color: #67e8f9 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
 }
 
 .game-header > .timer .timer-label {
-    font-size: 0.55rem;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 2px;
-    font-weight: 600;
-    line-height: 1;
+    font-size: 0.52rem !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    margin-bottom: 1px !important;
+    font-weight: 600 !important;
 }
 
-/* Score - centered in the window */
+/* Score - strictly centered via the middle grid column */
 .game-header > .score {
-    flex: 1;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #67e8f9;
-    line-height: 1;
-    margin-top: -2px; /* fine vertical alignment tweak */
+    grid-column: 2 !important;
+    text-align: center !important;
+    font-size: 1.9rem !important;
+    font-weight: 700 !important;
+    color: #67e8f9 !important;
+    line-height: 1 !important;
 }
 
 .game-header > .score .score-label {
-    display: block;
-    font-size: 0.55rem;
-    font-weight: 700;
-    color: #f87171; /* red */
-    letter-spacing: 0.8px;
-    margin-bottom: 1px;
-    text-transform: uppercase;
-    line-height: 1;
+    display: block !important;
+    font-size: 0.52rem !important;
+    font-weight: 700 !important;
+    color: #f87171 !important;
+    letter-spacing: 0.6px !important;
+    margin-bottom: 0 !important;
+    text-transform: uppercase !important;
 }
 
-/* Menu button - top right, compact */
+/* Menu button - strictly right column, content-sized only */
 .game-header > .btn-menu {
-    flex: 0 0 auto;
-    margin-left: 8px;
+    grid-column: 3 !important;
+    justify-self: end !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    margin-left: 0 !important;
 }
 
 .btn-menu {
-    font-size: 0.72rem !important;
-    padding: 5px 11px !important;
-    background: rgba(148, 163, 184, 0.15);
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    color: #cbd5e1;
-    border-radius: 9999px;
-    white-space: nowrap;
-    line-height: 1;
-    min-height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    font-size: 0.68rem !important;
+    padding: 4px 10px !important;
+    background: rgba(148, 163, 184, 0.12) !important;
+    border: 1px solid rgba(148, 163, 184, 0.22) !important;
+    color: #cbd5e1 !important;
+    border-radius: 9999px !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    min-height: 26px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: fit-content !important;
+    max-width: 68px !important;   /* hard safety cap */
+    box-sizing: border-box !important;
+    cursor: pointer !important;
 }
 
 .btn-menu:hover {
-    background: rgba(148, 163, 184, 0.25);
-    border-color: rgba(148, 163, 184, 0.4);
+    background: rgba(148, 163, 184, 0.22) !important;
+    border-color: rgba(148, 163, 184, 0.35) !important;
 }
