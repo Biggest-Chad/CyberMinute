@@ -102,6 +102,7 @@ let autoAdvanceTimeout = null;
 // Leaderboard / Submission state
 let sessionToken = null;
 let quizStartTime = null;
+let finalDuration = null;   // Captured exactly when the Timed quiz ends (frozen value)
 
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
@@ -430,7 +431,8 @@ async function submitScoreToLeaderboard(playerName) {
         return;
     }
 
-    const duration = Math.floor((Date.now() - quizStartTime) / 1000);
+    // Use the frozen duration captured at quiz end (prevents counting extra time while on results screen)
+    const duration = finalDuration !== null ? finalDuration : Math.floor((Date.now() - quizStartTime) / 1000);
 
     const payload = {
         name: playerName,
@@ -474,9 +476,10 @@ async function submitScoreToLeaderboard(playerName) {
                     </div>
                 `;
             }
-            // Clear token after successful submission
+            // Clear submission state after successful submission
             sessionToken = null;
             quizStartTime = null;
+            finalDuration = null;
             sessionStorage.removeItem("cyberminute_session_token");
         } else {
             alert("Error: " + (result.error || `Failed with status ${response.status}`));
