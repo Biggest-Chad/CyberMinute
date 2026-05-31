@@ -600,19 +600,33 @@ async function fetchLeaderboard(view) {
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch leaderboard");
+            const errorText = await response.text();
+            console.error("Leaderboard fetch failed:", response.status, errorText);
+            throw new Error(`Failed to fetch leaderboard (${response.status}): ${errorText}`);
         }
 
         let scores = await response.json();
 
-        // Client-side "Today" filter (using UTC date)
+        // Client-side "Today" filter using Bangkok time (UTC+7)
         if (view === "today") {
-            const today = new Date();
-            const startOfDay = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
-
+            const BANGKOK_OFFSET_HOURS = 7;
+            
+            const now = new Date();
+            
+            // Convert current moment to Bangkok local time
+            const bangkokNow = new Date(now.getTime() + (BANGKOK_OFFSET_HOURS * 60 * 60 * 1000));
+            
+            // Start of "today" in Bangkok timezone, converted back to a UTC timestamp for comparison
+            // (because completed_at is stored in UTC in the database)
+            const startOfBangkokDay = new Date(Date.UTC(
+                bangkokNow.getUTCFullYear(),
+                bangkokNow.getUTCMonth(),
+                bangkokNow.getUTCDate()
+            ));
+            
             scores = scores.filter(s => {
                 const completed = new Date(s.completed_at);
-                return completed >= startOfDay;
+                return completed >= startOfBangkokDay;
             });
         }
 
