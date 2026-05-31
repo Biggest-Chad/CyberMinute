@@ -650,7 +650,6 @@ function renderLeaderboard(scores, view) {
                     <th>#</th>
                     <th>Name</th>
                     <th>Score</th>
-                    <th>Time</th>
                     <th>When</th>
                 </tr>
             </thead>
@@ -659,16 +658,17 @@ function renderLeaderboard(scores, view) {
 
     scores.forEach((entry, index) => {
         const date = new Date(entry.completed_at);
-        const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        const d = date.getDate();
+        const m = date.getMonth() + 1;
+        const y = date.getFullYear();
+        const dateStr = `${d}/${m}/${y}`;
 
         html += `
             <tr>
                 <td>${index + 1}</td>
                 <td>${escapeHtml(entry.name)}</td>
                 <td class="score">${entry.score}</td>
-                <td>${entry.duration}s</td>
-                <td>${dateStr} ${timeStr}</td>
+                <td>${dateStr}</td>
             </tr>
         `;
     });
