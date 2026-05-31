@@ -99,6 +99,10 @@ let isStudyMode = false;
 let highScore = localStorage.getItem('cyberMinuteHighScore') || 0;
 let autoAdvanceTimeout = null;
 
+// Leaderboard / Submission state
+let sessionToken = null;
+let quizStartTime = null;
+
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -129,6 +133,10 @@ const highScoreDisplay = document.getElementById('high-score-display');
 const endHighScoreDisplay = document.getElementById('end-high-score-display');
 const finalScoreEl = document.getElementById('final-score');
 
+const submitScoreSection = document.getElementById('submit-score-section');
+const playerNameInput = document.getElementById('player-name');
+const submitScoreBtn = document.getElementById('submit-score-btn');
+
 // Initialize
 function init() {
     highScoreDisplay.textContent = highScore;
@@ -145,6 +153,22 @@ function init() {
     menuButton.addEventListener('click', showMenuConfirm);
     confirmGoBack.addEventListener('click', goBackToMenu);
     confirmStay.addEventListener('click', hideMenuConfirm);
+
+    // Leaderboard submission
+    if (submitScoreBtn) {
+        submitScoreBtn.addEventListener('click', () => {
+            const name = playerNameInput.value.trim();
+            if (!name) {
+                alert("Please enter your name");
+                return;
+            }
+            if (name.length > 12) {
+                alert("Name must be 12 characters or less");
+                return;
+            }
+            submitScoreToLeaderboard(name);
+        });
+    }
 }
 
 function startGame(studyMode) {
@@ -166,6 +190,10 @@ function startGame(studyMode) {
     scoreEl.textContent = score;
     feedbackEl.classList.add('hidden');
 
+    // Reset leaderboard submission state
+    sessionToken = null;
+    quizStartTime = null;
+
     // Reset study timer display if needed
     if (isStudyMode) {
         timerEl.textContent = '0:00';
@@ -173,6 +201,11 @@ function startGame(studyMode) {
         startStudyTimer();
         showQuestion();
     } else {
+        // Timed mode: generate session token for leaderboard submission
+        sessionToken = crypto.randomUUID();
+        quizStartTime = Date.now();
+        sessionStorage.setItem('cyberminute_session_token', sessionToken);
+
         timerEl.style.color = '';
         startCountdown();
     }
@@ -319,6 +352,16 @@ function endGame() {
         endHighScoreDisplay.textContent = highScore;
         highScoreDisplay.textContent = highScore;
     }
+
+    // Show submit score section only for legitimate Timed completions
+    if (submitScoreSection) {
+        if (!isStudyMode && sessionToken && quizStartTime) {
+            submitScoreSection.classList.remove('hidden');
+            if (playerNameInput) playerNameInput.value = "";
+        } else {
+            submitScoreSection.classList.add('hidden');
+        }
+    }
 }
 
 // Initialize the game
@@ -341,6 +384,11 @@ function goBackToMenu() {
     clearInterval(studyTimerInterval);
     clearTimeout(autoAdvanceTimeout);
 
+    // Clear submission state
+    sessionToken = null;
+    quizStartTime = null;
+    sessionStorage.removeItem('cyberminute_session_token');
+
     gameScreen.classList.remove('active');
     endScreen.classList.remove('active');
     startScreen.classList.add('active');
@@ -351,6 +399,47 @@ function goBackToMenu() {
     falseButton.style.display = 'block';
 }
 
+
+
+// ==================== LEADERBOARD SUBMISSION ====================
+async function submitScoreToLeaderboard(playerName) {
+    if (!sessionToken || !quizStartTime) {
+        alert("Invalid session. Please complete a Timed quiz properly.");
+        return;
+    }
+
+    const duration = Math.floor((Date.now() - quizStartTime) / 1000);
+
+    const payload = {
+        name: playerName,
+        score: score,
+        duration: duration,
+        session_token: sessionToken
+    };
+
+    try {
+        const response = await fetch("https://sbqjdgrchsbvfwgodhmt.supabase.co/functions/v1/submit-score", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert("Score submitted successfully! Thank you.");
+            // Clear token after successful submission
+            sessionToken = null;
+            quizStartTime = null;
+            sessionStorage.removeItem("cyberminute_session_token");
+        } else {
+            alert("Error: " + (result.error || "Failed to submit score"));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Network error. Could not submit score.");
+    }
+}
 
 // Subtle Matrix Digital Rain Background
 // Very low density and opacity for atmosphere

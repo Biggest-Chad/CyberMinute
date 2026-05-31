@@ -78,6 +78,16 @@
                     <span>questions correctly</span>
                 </div>
 
+                <!-- Leaderboard Submission (only shown after Timed mode) -->
+                <div id="submit-score-section" class="submit-score hidden">
+                    <div class="submit-header">Submit your score to the leaderboard</div>
+                    <div class="submit-form">
+                        <input type="text" id="player-name" maxlength="12" placeholder="Your name (max 12 chars)" />
+                        <button id="submit-score-btn" class="btn btn-primary">Submit Score</button>
+                    </div>
+                    <p class="submit-note">Only legitimate 60-second completions are accepted.</p>
+                </div>
+
                 <div class="mode-buttons">
                     <button id="play-again" class="btn btn-primary">Play Again</button>
                     <button id="end-study-button" class="btn btn-secondary">Study Mode</button>
