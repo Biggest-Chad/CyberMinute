@@ -482,7 +482,15 @@ async function submitScoreToLeaderboard(playerName) {
             finalDuration = null;
             sessionStorage.removeItem("cyberminute_session_token");
         } else {
-            alert("Error: " + (result.error || `Failed with status ${response.status}`));
+            const errorMsg = result.error || "";
+            if (response.status === 429) {
+                // Rate limit errors - show friendly message
+                alert(errorMsg || "Too many submissions. Please wait before trying again.");
+            } else if (errorMsg.includes("session token")) {
+                alert("This quiz session has already been submitted.");
+            } else {
+                alert("Error: " + errorMsg);
+            }
             if (submitScoreBtn) submitScoreBtn.disabled = false;
         }
     } catch (err) {
