@@ -137,6 +137,14 @@ const submitScoreSection = document.getElementById('submit-score-section');
 const playerNameInput = document.getElementById('player-name');
 const submitScoreBtn = document.getElementById('submit-score-btn');
 
+// Leaderboard elements
+const leaderboardButton = document.getElementById('leaderboard-button');
+const leaderboardModal = document.getElementById('leaderboard-modal');
+const closeLeaderboardBtn = document.getElementById('close-leaderboard');
+const tabAll = document.getElementById('tab-all');
+const tabToday = document.getElementById('tab-today');
+const leaderboardContent = document.getElementById('leaderboard-content');
+
 // Initialize
 function init() {
     highScoreDisplay.textContent = highScore;
@@ -168,6 +176,20 @@ function init() {
             }
             submitScoreToLeaderboard(name);
         });
+    }
+
+    // Leaderboard
+    if (leaderboardButton) {
+        leaderboardButton.addEventListener('click', showLeaderboard);
+    }
+    if (closeLeaderboardBtn) {
+        closeLeaderboardBtn.addEventListener('click', () => leaderboardModal.classList.add('hidden'));
+    }
+    if (tabAll) {
+        tabAll.addEventListener('click', () => switchLeaderboardTab('all'));
+    }
+    if (tabToday) {
+        tabToday.addEventListener('click', () => switchLeaderboardTab('today'));
     }
 }
 
@@ -490,3 +512,122 @@ function initMatrixBackground() {
 
 // Start the background
 initMatrixBackground();
+// ==================== LEADERBOARD ====================
+const SUPABASE_URL = "https://sbqjdgrchsbvfwgodhmt.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE"; // <-- Replace with your actual anon key
+
+let currentLeaderboardTab = "all";
+
+
+function showLeaderboard() {
+    leaderboardModal.classList.remove("hidden");
+    switchLeaderboardTab("all"); // Default to All Time
+
+    // Close when clicking outside the modal content
+    setTimeout(() => {
+        leaderboardModal.onclick = function(e) {
+            if (e.target === leaderboardModal) {
+                leaderboardModal.classList.add("hidden");
+            }
+        };
+    }, 10);
+}
+
+
+function switchLeaderboardTab(tab) {
+    currentLeaderboardTab = tab;
+
+    // Update active tab styling
+    if (tab === "all") {
+        tabAll.classList.add("active");
+        tabToday.classList.remove("active");
+    } else {
+        tabToday.classList.add("active");
+        tabAll.classList.remove("active");
+    }
+
+    fetchLeaderboard(tab);
+}
+
+async function fetchLeaderboard(view) {
+    leaderboardContent.innerHTML = '<div class="loading">Loading leaderboard...</div>';
+
+    try {
+        let url = `${SUPABASE_URL}/rest/v1/scores?select=name,score,duration,completed_at&order=score.desc,completed_at.desc&limit=50`;
+
+        const response = await fetch(url, {
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch leaderboard");
+        }
+
+        let scores = await response.json();
+
+        // Client-side "Today" filter (using UTC date)
+        if (view === "today") {
+            const today = new Date();
+            const startOfDay = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+
+            scores = scores.filter(s => {
+                const completed = new Date(s.completed_at);
+                return completed >= startOfDay;
+            });
+        }
+
+        renderLeaderboard(scores, view);
+    } catch (err) {
+        console.error(err);
+        leaderboardContent.innerHTML = '<div class="error-message">Could not load leaderboard. Please try again later.</div>';
+    }
+}
+
+function renderLeaderboard(scores, view) {
+    if (!scores || scores.length === 0) {
+        leaderboardContent.innerHTML = `<div class="loading">No scores yet for ${view === "today" ? "today" : "all time"}.</div>`;
+        return;
+    }
+
+    let html = `
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                    <th>When</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    scores.forEach((entry, index) => {
+        const date = new Date(entry.completed_at);
+        const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${escapeHtml(entry.name)}</td>
+                <td class="score">${entry.score}</td>
+                <td>${entry.duration}s</td>
+                <td>${dateStr} ${timeStr}</td>
+            </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    leaderboardContent.innerHTML = html;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}

@@ -23,6 +23,7 @@
                 <div class="mode-buttons">
                     <button id="start-button" class="btn btn-primary">Start 60-Second Challenge</button>
                     <button id="study-button" class="btn btn-secondary">Casual Study Mode</button>
+                    <button id="leaderboard-button" class="btn btn-secondary">Leaderboard</button>
                 </div>
 
                 <div class="high-score-box">
@@ -110,6 +111,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="modal hidden">
+        <div class="modal-content leaderboard-modal">
+            <div class="leaderboard-header">
+                <h2>Leaderboard</h2>
+                <button id="close-leaderboard" class="btn-close">×</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="leaderboard-tabs">
+                <button id="tab-all" class="tab-button active">All Time</button>
+                <button id="tab-today" class="tab-button">Today</button>
+            </div>
+
+            <!-- Leaderboard Content -->
+            <div id="leaderboard-content" class="leaderboard-content">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+
     </div>
 
     <script src="script.js"></script>

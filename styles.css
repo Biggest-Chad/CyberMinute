@@ -523,3 +523,106 @@ h1 {
     margin-top: 6px;
     margin-bottom: 0;
 }
+
+/* Leaderboard Modal Styles */
+.leaderboard-modal {
+    max-width: 480px;
+    width: 95%;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.leaderboard-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 8px;
+}
+
+.btn-close:hover {
+    color: #e2e8f0;
+}
+
+.leaderboard-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    margin-bottom: 12px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-button.active {
+    color: #67e8f9;
+    border-bottom-color: #67e8f9;
+    font-weight: 600;
+}
+
+.leaderboard-content {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 8px 6px;
+    text-align: left;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.leaderboard-table th {
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.leaderboard-table td.score {
+    font-weight: 700;
+    color: #a3e635;
+}
+
+.leaderboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+}
+
+.error-message {
+    color: #fb7185;
+    text-align: center;
+    padding: 12px;
+}
