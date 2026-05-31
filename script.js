@@ -441,9 +441,13 @@ async function submitScoreToLeaderboard(playerName) {
 
     console.log("Submitting score with payload:", payload);
 
+    // Disable button during submission for better UX
+    if (submitScoreBtn) submitScoreBtn.disabled = true;
+
     try {
         const response = await fetch("https://sbqjdgrchsbvfwgodhmt.supabase.co/functions/v1/submit-score", {
             method: "POST",
+            mode: "cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
@@ -454,23 +458,34 @@ async function submitScoreToLeaderboard(playerName) {
         } catch (jsonErr) {
             console.error("Failed to parse JSON response:", jsonErr);
             alert(`Submission failed (status ${response.status}). The server did not return valid JSON.`);
+            if (submitScoreBtn) submitScoreBtn.disabled = false;
             return;
         }
 
         console.log("Submission response:", response.status, result);
 
         if (response.ok) {
-            alert("Score submitted successfully! Thank you.");
+            // Success - hide the submit section and show confirmation
+            if (submitScoreSection) {
+                submitScoreSection.innerHTML = `
+                    <div class="submit-success">
+                        ✅ Score submitted successfully!<br>
+                        Thank you — your score is now on the leaderboard.
+                    </div>
+                `;
+            }
             // Clear token after successful submission
             sessionToken = null;
             quizStartTime = null;
             sessionStorage.removeItem("cyberminute_session_token");
         } else {
             alert("Error: " + (result.error || `Failed with status ${response.status}`));
+            if (submitScoreBtn) submitScoreBtn.disabled = false;
         }
     } catch (err) {
         console.error("Fetch error:", err);
-        alert("Network error: " + (err.message || "Could not reach the server. This is often a CORS or network issue."));
+        alert("Network error: " + (err.message || "Could not reach the server."));
+        if (submitScoreBtn) submitScoreBtn.disabled = false;
     }
 }
 
