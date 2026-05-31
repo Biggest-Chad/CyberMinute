@@ -581,8 +581,27 @@ function initMatrixBackground() {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = Array(columns).fill(1);
 
-    // Very subtle character set
-    const chars = '๐๑๒๓๔๕๖๗๘๙กขคฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ';
+    // Cybersecurity-themed glyph pool (balanced mixture)
+    // Singles (symbols, letters, Thai) appear more often naturally
+    // Short meaningful terms (English + Thai) appear occasionally for the "mosaic" effect
+    const cyberGlyphs = [
+        // === Single characters (high frequency - core of the rain) ===
+        '0','1','2','3','4','5','6','7','8','9',
+        'A','B','C','D','E','F','H','K','P','R','S','T','V','X','Z',
+        'λ','Δ','{}','[]','<>','/','\\','|','-','_','*','+','=','#','%','@','!',
+        // Thai singles (kept for cultural relevance)
+        '๐','๑','๒','๓','๔','๕','๖','๗','๘','๙',
+        'ฟ','ิ','ช','แ','ร','น','ว','ั','ส','ม','ั','ล','แ','ฮ','ก','ร','ห','ั','ส',
+
+        // === Short English cybersecurity terms ===
+        '2FA','PHISH','HACK','RANSOM','BREACH','HASH','KEY','VPN','XSS','BOT','ZERO','CVSS','DDoS','MAL','VIR','SQL','NET',
+
+        // === Short Thai cybersecurity terms ===
+        'ฟิช','แรน','ไวรัส','มัล','แฮก','รหัส','2FA',
+
+        // === Extra technical / hex feel ===
+        'A','B','C','D','E','F','0','1','2','3','4','5','6','7','8','9'
+    ];
 
     function draw() {
         // Very faint trail
@@ -593,7 +612,7 @@ function initMatrixBackground() {
         ctx.font = `${fontSize}px monospace`;
 
         for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
+            const text = cyberGlyphs[Math.floor(Math.random() * cyberGlyphs.length)];
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
             // Slow fall + random reset
