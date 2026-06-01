@@ -1,8 +1,12 @@
 // ============================================
-// CyberMinute2 - Refactored Game Logic
+// CyberMinute - Refactored Game Logic
 // All original questions and rules preserved
 // Enhanced with new Timed auto-advance + Study mode flows
+// DB-backed questions with local fallback (Supabase)
 // ============================================
+
+// Supabase config (reused for both leaderboard and questions)
+// These are safe to expose in frontend (anon key with RLS)
 
 const questions = [
     // Email Phishing
@@ -95,9 +99,7 @@ const questions = [
 const CATEGORIES = [
     { id: "Email Phishing",     label: "Phishing" },
     { id: "Password Security",  label: "Passwords" },
-    { id: "Email Scams",        label: "Email Scams" },
-    { id: "Virus Prevention",   label: "Viruses" },
-    { id: "Ransomware",         label: "Ransomware" }
+    { id: "Virus Attacks",      label: "Virus Attacks" }
 ];
 
 /**
@@ -107,15 +109,51 @@ const CATEGORIES = [
  * Future: When questions live in Supabase, replace the body of this function.
  */
 function getStudyQuestions(category = null) {
+    // Prefer DB-fetched questions when available, fall back to local hardcoded array
+    const source = allQuestions.length > 0 ? allQuestions : questions;
+
     if (!category) {
-        return [...questions];
+        return [...source];
     }
-    return questions.filter(q => q.category === category);
+    return source.filter(q => q.category === category);
+}
+
+/**
+ * Fetches questions from Supabase.
+ * Falls back to local questions array if the fetch fails.
+ * This is the single source of truth for question data going forward.
+ */
+async function fetchQuestions() {
+    // Reuse the same Supabase config already used for the leaderboard
+    try {
+        const url = `${SUPABASE_URL}/rest/v1/questions?select=question,answer,category&is_active=eq.true`;
+
+        const res = await fetch(url, {
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error(`Supabase fetch failed: ${res.status}`);
+        }
+
+        allQuestions = await res.json();
+        console.log(`[CyberMinute] Loaded ${allQuestions.length} questions from Supabase`);
+        return allQuestions;
+    } catch (err) {
+        console.warn("[CyberMinute] Supabase fetch failed, using local fallback:", err.message);
+        // Fallback to the original local questions array
+        allQuestions = [...questions];
+        return allQuestions;
+    }
 }
 
 
 // Game State
 let currentQuestionIndex = 0;
+let allQuestions = [];  // Populated by fetchQuestions() from Supabase (with local fallback)
 let score = 0;
 let questionsAnswered = 0;
 let timer = 60;
@@ -233,9 +271,12 @@ function init() {
     if (tabToday) {
         tabToday.addEventListener('click', () => switchLeaderboardTab('today'));
     }
+
+    // Preload questions from Supabase (or fallback) as soon as the page loads
+    fetchQuestions().catch(err => console.warn("Initial question preload failed", err));
 }
 
-function startGame(studyMode) {
+async function startGame(studyMode) {
     isStudyMode = studyMode;
 
     // Reset category display state when starting a new game
@@ -243,12 +284,15 @@ function startGame(studyMode) {
         currentStudyCategory = null;
     }
 
+    // Fetch questions from Supabase (with local fallback) - must happen before using questions
+    await fetchQuestions();
+
     // Support category filtering for Study mode (from STUDY_MODE_CATEGORIES_PLAN.md)
     if (isStudyMode && window._studyCategoryFilter) {
         currentQuestions = getStudyQuestions(window._studyCategoryFilter).sort(() => Math.random() - 0.5);
         window._studyCategoryFilter = null; // one-time use
     } else {
-        currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+        currentQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
     }
 
     currentQuestionIndex = 0;
@@ -310,7 +354,7 @@ function startStudyMode(category = null) {
         currentStudyCategory = "All Categories";
     }
 
-    startGame(true);
+    startGame(true).catch(err => console.warn("Failed to start study mode", err));
 }
 
 // ==================== STUDY MODE TIMER ====================
@@ -729,7 +773,6 @@ function initMatrixBackground() {
 // Start the background
 initMatrixBackground();
 // ==================== LEADERBOARD ====================
-const SUPABASE_URL = "https://sbqjdgrchsbvfwgodhmt.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNicWpkZ3JjaHNidmZ3Z29kaG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDE4OTIsImV4cCI6MjA5NTcxNzg5Mn0.TD72cOY3QhxtLhOY6BFdhRmiz4WNpSacn3Nlc3z2_2c"; // Real anon key - safe for frontend
 
 let currentLeaderboardTab = "all";
