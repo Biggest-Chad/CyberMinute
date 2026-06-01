@@ -599,7 +599,11 @@ async function submitScoreToLeaderboard(playerName) {
         const response = await fetch("https://sbqjdgrchsbvfwgodhmt.supabase.co/functions/v1/submit-score", {
             method: "POST",
             mode: "cors",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+            },
             body: JSON.stringify(payload)
         });
 
