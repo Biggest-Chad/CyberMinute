@@ -165,3 +165,32 @@ CREATE TABLE public.questions (
 Ready to proceed with the concrete work (starting with schema creation and seed script in the CyberMinute2 environment).
 
 Let me know when you want to begin Phase 1.
+
+---
+
+## 11. Security Hardening (Completed 2026-06-02)
+
+**Anon Key Permissions Audit & Hardening**
+
+After implementing the question database migration, a full audit of `anon` role privileges was performed.
+
+### Final State
+- `anon` role now has **only SELECT** privilege on both `questions` and `scores` tables.
+- Row Level Security (RLS) is enabled on both tables.
+- Strict SELECT policy on `questions` (`is_active = true` only).
+- All write capabilities (INSERT, UPDATE, DELETE, TRUNCATE, TRIGGER, REFERENCES) have been revoked from `anon`.
+
+### Default Privileges for Future Tables
+Default privileges have been set so that any new tables created in the `public` schema will automatically grant **only SELECT** to the `anon` role (preventing accidental over-privileged tables in the future).
+
+### Verification
+- Tested by creating a temporary table → `anon` received only `SELECT`.
+- No other tables exist in the project besides `questions` and `scores`.
+
+### Rationale
+- The `anon` key is exposed in the frontend (required for direct Supabase REST calls).
+- This hardening ensures the public anon key cannot be abused for data modification even if RLS policies are accidentally weakened in the future.
+- Leaderboard writes remain unaffected (they go through a privileged Edge Function using the service role).
+
+**Date hardened**: 2026-06-02
+**Performed by**: Hermes Agent (autonomous)
