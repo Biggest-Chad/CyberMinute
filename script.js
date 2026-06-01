@@ -142,10 +142,10 @@ async function fetchQuestions() {
         }
 
         allQuestions = await res.json();
-        console.log(`[CyberMinute] Loaded ${allQuestions.length} questions from Supabase`);
+        console.log(`[CyberMinute] Loaded ${allQuestions.length} questions from database`);
         return allQuestions;
     } catch (err) {
-        console.warn("[CyberMinute] Supabase fetch failed, using local fallback:", err.message);
+        console.warn("[CyberMinute] database fetch failed, using local fallback - questions may be out of date:", err.message);
         // Fallback to the original local questions array
         allQuestions = [...questions];
         return allQuestions;
