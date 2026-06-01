@@ -7,6 +7,7 @@
 
 // Supabase config (reused for both leaderboard and questions)
 // These are safe to expose in frontend (anon key with RLS)
+const SUPABASE_URL = "https://sbqjdgrchsbvfwgodhmt.supabase.co";
 
 const questions = [
     // Email Phishing
@@ -153,6 +154,7 @@ async function fetchQuestions() {
 
 // Game State
 let currentQuestionIndex = 0;
+let currentQuestions = [];  // Current set of questions for the active game/session
 let allQuestions = [];  // Populated by fetchQuestions() from Supabase (with local fallback)
 let score = 0;
 let questionsAnswered = 0;
