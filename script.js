@@ -212,6 +212,10 @@ function init() {
                 alert("Name must be 12 characters or less");
                 return;
             }
+            if (!/^[A-Za-z' -]+$/.test(name)) {
+                alert("Name can only contain letters, spaces, apostrophes (') and hyphens (-)");
+                return;
+            }
             submitScoreToLeaderboard(name);
         });
     }
