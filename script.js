@@ -394,8 +394,11 @@ function handleAnswer(userAnswer) {
     questionsAnswered++;
     if (isCorrect) {
         score++;
-        scoreEl.textContent = score;
+    } else if (!isStudyMode) {
+        // Penalty for incorrect answers in Challenge mode only
+        score = Math.max(0, score - 1);
     }
+    scoreEl.textContent = score;
 
     // Hide the answer buttons immediately after selection
     trueButton.style.display = 'none';
