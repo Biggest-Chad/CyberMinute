@@ -631,14 +631,18 @@ async function submitScoreToLeaderboard(playerName) {
             finalDuration = null;
             sessionStorage.removeItem("cyberminute_session_token");
         } else {
-            const errorMsg = result.error || "";
+            let errorMsg = "";
+            if (result.error) {
+                errorMsg = typeof result.error === "string" ? result.error : (result.error.message || JSON.stringify(result.error));
+            }
             if (response.status === 429) {
-                // Rate limit errors - show friendly message
                 alert(errorMsg || "Too many submissions. Please wait before trying again.");
-            } else if (errorMsg.includes("session token")) {
+            } else if (errorMsg.toLowerCase().includes("session token")) {
                 alert("This quiz session has already been submitted.");
-            } else {
+            } else if (errorMsg) {
                 alert("Error: " + errorMsg);
+            } else {
+                alert(`Submission failed (status ${response.status}). Please try again.`);
             }
             if (submitScoreBtn) submitScoreBtn.disabled = false;
         }
