@@ -10,6 +10,11 @@
 const SUPABASE_URL = "https://sbqjdgrchsbvfwgodhmt.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNicWpkZ3JjaHNidmZ3Z29kaG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDE4OTIsImV4cCI6MjA5NTcxNzg5Mn0.TD72cOY3QhxtLhOY6BFdhRmiz4WNpSacn3Nlc3z2_2c";
 
+const PORTAL_GAME_SLUG = "Cyberminute";
+const PORTAL_EMAIL_DOMAIN = "@skywavetechnologies.com";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const questions = [
     // Email Phishing
     { question: "Phishing emails often contain spelling and grammar mistakes.", answer: true, category: "Email Phishing" },
@@ -173,6 +178,10 @@ let sessionToken = null;
 let quizStartTime = null;
 let finalDuration = null;   // Captured exactly when the Timed quiz ends (frozen value)
 
+// Portal auth state (CyberPortal handoff)
+let isPortalAuthenticated = false;
+let portalUser = null;
+
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
@@ -223,6 +232,130 @@ const studyAllBtn = document.getElementById('study-all-btn');
 const categoryGrid = document.getElementById('category-grid');
 
 const endCategoryEl = document.getElementById('end-category');
+
+function isValidPortalEmail(email) {
+    return typeof email === "string" && email.toLowerCase().endsWith(PORTAL_EMAIL_DOMAIN);
+}
+
+function clearUrlHash() {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
+function updateHighScoreDisplays(value) {
+    highScore = value;
+    if (highScoreDisplay) highScoreDisplay.textContent = highScore;
+    if (endHighScoreDisplay) endHighScoreDisplay.textContent = highScore;
+}
+
+async function loadPortalHighScore() {
+    try {
+        const { data, error } = await supabase
+            .from("user_highscores")
+            .select("highscore")
+            .eq("game_slug", PORTAL_GAME_SLUG)
+            .maybeSingle();
+
+        if (error) {
+            console.warn("[CyberMinute] could not load portal high score:", error.message);
+            return;
+        }
+
+        const portalHigh = data?.highscore ?? 0;
+        const localHigh = Number(localStorage.getItem("cyberMinuteHighScore")) || 0;
+        const merged = Math.max(portalHigh, localHigh);
+
+        if (merged > 0) {
+            localStorage.setItem("cyberMinuteHighScore", merged);
+            updateHighScoreDisplays(merged);
+        }
+    } catch (err) {
+        console.warn("[CyberMinute] portal high score fetch failed:", err.message);
+    }
+}
+
+async function acceptPortalSession(session) {
+    const email = session?.user?.email ?? "";
+
+    if (!isValidPortalEmail(email)) {
+        console.warn("[CyberMinute] portal session rejected — invalid email domain:", email);
+        await supabase.auth.signOut();
+        isPortalAuthenticated = false;
+        portalUser = null;
+        return false;
+    }
+
+    portalUser = session.user;
+    isPortalAuthenticated = true;
+    await loadPortalHighScore();
+    console.log("[CyberMinute] portal user authenticated:", email);
+    return true;
+}
+
+async function handlePortalAuthHandoff() {
+    const hash = window.location.hash.substring(1);
+    if (!hash) return false;
+
+    const params = new URLSearchParams(hash);
+    if (params.get("type") !== "portal_handoff") return false;
+
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
+    clearUrlHash();
+
+    if (!accessToken || !refreshToken) {
+        console.warn("[CyberMinute] portal_handoff missing tokens");
+        return false;
+    }
+
+    const { data, error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+    });
+
+    if (error) {
+        console.error("[CyberMinute] portal handoff setSession failed:", error.message);
+        return false;
+    }
+
+    return acceptPortalSession(data.session);
+}
+
+async function initPortalAuth() {
+    const handoffAccepted = await handlePortalAuthHandoff();
+
+    if (!handoffAccepted) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            await acceptPortalSession(session);
+        }
+    }
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+        if (session && isValidPortalEmail(session.user?.email ?? "")) {
+            portalUser = session.user;
+            isPortalAuthenticated = true;
+        } else if (!session) {
+            portalUser = null;
+            isPortalAuthenticated = false;
+        }
+    });
+}
+
+async function upsertPortalHighScore(newScore) {
+    try {
+        const { error } = await supabase.rpc("upsert_user_highscore", {
+            p_game_slug: PORTAL_GAME_SLUG,
+            p_highscore: newScore,
+        });
+
+        if (error) throw error;
+        console.log("[CyberMinute] portal high score saved:", newScore);
+        return true;
+    } catch (err) {
+        console.warn("[CyberMinute] portal high score save failed, localStorage kept:", err.message);
+        return false;
+    }
+}
 
 // Initialize
 function init() {
@@ -564,27 +697,32 @@ function endGame() {
         }
 
         // Update high score only in challenge mode
-        if (score > highScore) {
-            highScore = score;
-            localStorage.setItem('cyberMinuteHighScore', highScore);
-            if (endHighScoreDisplay) endHighScoreDisplay.textContent = highScore;
-            if (highScoreDisplay) highScoreDisplay.textContent = highScore;
+        const previousBest = Number(highScore) || 0;
+        if (score > previousBest) {
+            localStorage.setItem("cyberMinuteHighScore", score);
+            updateHighScoreDisplays(score);
+
+            if (isPortalAuthenticated) {
+                upsertPortalHighScore(score);
+            }
         }
     }
 
-    // Show submit score section only for legitimate Timed completions
+    // Show submit score section only for anonymous Timed completions
     if (submitScoreSection) {
-        if (!isStudyMode && sessionToken && quizStartTime) {
-            submitScoreSection.classList.remove('hidden');
+        if (!isStudyMode && sessionToken && quizStartTime && !isPortalAuthenticated) {
+            submitScoreSection.classList.remove("hidden");
             if (playerNameInput) playerNameInput.value = "";
         } else {
-            submitScoreSection.classList.add('hidden');
+            submitScoreSection.classList.add("hidden");
         }
     }
 }
 
-// Initialize the game
-init();
+// Bootstrap portal auth then initialize the game
+initPortalAuth()
+    .catch((err) => console.warn("[CyberMinute] portal auth init failed:", err.message))
+    .finally(() => init());
 
 // ============================================
 // ==================== MENU / BACK TO START ====================
