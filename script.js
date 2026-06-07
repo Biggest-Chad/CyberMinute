@@ -13,7 +13,25 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const PORTAL_GAME_SLUG = "Cyberminute";
 const PORTAL_EMAIL_DOMAIN = "@skywavetechnologies.com";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/** Lazy Supabase client — must not throw if the library failed to load. */
+let supabaseClient = null;
+
+function getSupabaseClient() {
+    if (supabaseClient) return supabaseClient;
+
+    const lib = typeof window !== "undefined" ? window.supabase : null;
+    if (!lib || typeof lib.createClient !== "function") {
+        return null;
+    }
+
+    try {
+        supabaseClient = lib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        return supabaseClient;
+    } catch (err) {
+        console.warn("[CyberMinute] Supabase client init failed:", err.message);
+        return null;
+    }
+}
 
 const questions = [
     // Email Phishing
@@ -248,6 +266,9 @@ function updateHighScoreDisplays(value) {
 }
 
 async function loadPortalHighScore() {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
     try {
         const { data, error } = await supabase
             .from("user_highscores")
@@ -274,11 +295,12 @@ async function loadPortalHighScore() {
 }
 
 async function acceptPortalSession(session) {
+    const supabase = getSupabaseClient();
     const email = session?.user?.email ?? "";
 
     if (!isValidPortalEmail(email)) {
         console.warn("[CyberMinute] portal session rejected — invalid email domain:", email);
-        await supabase.auth.signOut();
+        if (supabase) await supabase.auth.signOut();
         isPortalAuthenticated = false;
         portalUser = null;
         return false;
@@ -292,6 +314,9 @@ async function acceptPortalSession(session) {
 }
 
 async function handlePortalAuthHandoff() {
+    const supabase = getSupabaseClient();
+    if (!supabase) return false;
+
     const hash = window.location.hash.substring(1);
     if (!hash) return false;
 
@@ -321,6 +346,12 @@ async function handlePortalAuthHandoff() {
 }
 
 async function initPortalAuth() {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+        console.warn("[CyberMinute] Supabase unavailable — portal auth disabled");
+        return;
+    }
+
     const handoffAccepted = await handlePortalAuthHandoff();
 
     if (!handoffAccepted) {
@@ -342,6 +373,9 @@ async function initPortalAuth() {
 }
 
 async function upsertPortalHighScore(newScore) {
+    const supabase = getSupabaseClient();
+    if (!supabase) return false;
+
     try {
         const { error } = await supabase.rpc("upsert_user_highscore", {
             p_game_slug: PORTAL_GAME_SLUG,
@@ -853,6 +887,7 @@ function initMatrixBackground() {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
