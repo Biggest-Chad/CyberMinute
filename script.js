@@ -742,9 +742,9 @@ function endGame() {
         }
     }
 
-    // Show submit score section only for anonymous Timed completions
+    // Show submit score section for legitimate Timed completions
     if (submitScoreSection) {
-        if (!isStudyMode && sessionToken && quizStartTime && !isPortalAuthenticated) {
+        if (!isStudyMode && sessionToken && quizStartTime) {
             submitScoreSection.classList.remove("hidden");
             if (playerNameInput) playerNameInput.value = "";
         } else {
